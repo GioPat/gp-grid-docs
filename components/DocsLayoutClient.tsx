@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import type { PageTree } from "fumadocs-core/server";
+import type * as PageTree from "fumadocs-core/page-tree";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import {
   FrameworkProvider,

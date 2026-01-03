@@ -1,4 +1,4 @@
-import type { PageTree } from "fumadocs-core/server";
+import type * as PageTree from "fumadocs-core/page-tree";
 import type { Framework } from "./framework-context";
 
 /**
@@ -10,7 +10,7 @@ import type { Framework } from "./framework-context";
  */
 export function filterTreeByFramework(
   tree: PageTree.Root,
-  framework: Framework
+  framework: Framework,
 ): PageTree.Root {
   const filteredChildren: PageTree.Node[] = [];
 
@@ -22,7 +22,8 @@ export function filterTreeByFramework(
 
     // Handle folders (react, vue)
     if (node.type === "folder") {
-      const folderName = node.name.toLowerCase();
+      const folderName =
+        typeof node.name === "string" ? node.name.toLowerCase() : "";
 
       // If this is the selected framework's folder, extract its children
       if (folderName === framework) {
