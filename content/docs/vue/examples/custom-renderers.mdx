@@ -1,0 +1,140 @@
+---
+title: Custom Renderers
+description: Custom cell and header rendering in Vue
+---
+
+# Custom Renderers
+
+Customize how cells and headers are rendered.
+
+## Cell Renderers with Render Functions
+
+```vue
+<script setup lang="ts">
+import { Grid, type CellRendererParams } from "gp-grid-vue";
+import { h } from "vue";
+
+const StatusRenderer = (params: CellRendererParams) => {
+  const status = params.value as string;
+  const color = status === "Active" ? "green" : "red";
+
+  return h("div", {
+    class: "flex items-center h-full px-2",
+  }, [
+    h("span", {
+      class: "w-2 h-2 rounded-full mr-2",
+      style: { backgroundColor: color },
+    }),
+    status,
+  ]);
+};
+
+const columns: ColumnDefinition[] = [
+  { field: "name", cellDataType: "text", width: 150 },
+  { field: "status", cellDataType: "text", width: 120, cellRenderer: "status" },
+];
+</script>
+
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :cell-renderers="{ status: StatusRenderer }"
+  />
+</template>
+```
+
+## Cell Renderers with Components
+
+You can also use Vue components:
+
+```vue
+<!-- StatusCell.vue -->
+<script setup lang="ts">
+import { type CellRendererParams } from "gp-grid-vue";
+
+defineProps<CellRendererParams>();
+</script>
+
+<template>
+  <div class="flex items-center h-full px-2">
+    <span
+      class="w-2 h-2 rounded-full mr-2"
+      :style="{ backgroundColor: value === 'Active' ? 'green' : 'red' }"
+    />
+    {{ value }}
+  </div>
+</template>
+```
+
+```vue
+<!-- Parent component -->
+<script setup lang="ts">
+import { Grid } from "gp-grid-vue";
+import StatusCell from "./StatusCell.vue";
+import { h } from "vue";
+
+const StatusRenderer = (params: CellRendererParams) => {
+  return h(StatusCell, params);
+};
+</script>
+```
+
+## Header Renderers
+
+```vue
+<script setup lang="ts">
+import { type HeaderRendererParams } from "gp-grid-vue";
+import { h } from "vue";
+
+const CustomHeader = (params: HeaderRendererParams) => {
+  return h("div", {
+    class: "flex items-center justify-between w-full h-full px-2",
+  }, [
+    h("span", { class: "font-bold" }, params.column.headerName),
+    params.sortDirection && h("span", {},
+      params.sortDirection === "asc" ? "▲" : "▼"
+    ),
+  ]);
+};
+</script>
+
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :header-renderer="CustomHeader"
+  />
+</template>
+```
+
+## Renderer Parameters
+
+### CellRendererParams
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `CellValue` | Current cell value |
+| `rowData` | `TData` | Full row data object |
+| `column` | `ColumnDefinition` | Column definition |
+| `rowIndex` | `number` | Row index |
+| `colIndex` | `number` | Column index |
+| `isActive` | `boolean` | Is the active cell |
+| `isSelected` | `boolean` | Is in selection range |
+| `isEditing` | `boolean` | Is being edited |
+
+### HeaderRendererParams
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `column` | `ColumnDefinition` | Column definition |
+| `colIndex` | `number` | Column index |
+| `sortDirection` | `SortDirection \| undefined` | Current sort |
+| `sortIndex` | `number \| undefined` | Multi-sort order |
+| `sortable` | `boolean` | Is column sortable |
+| `filterable` | `boolean` | Is column filterable |
+| `hasFilter` | `boolean` | Has active filter |
+| `onSort` | `function` | Trigger sort |
+| `onFilterClick` | `function` | Open filter popup |

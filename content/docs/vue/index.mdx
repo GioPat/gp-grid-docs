@@ -1,0 +1,59 @@
+---
+title: Getting Started
+description: Get started with gp-grid in Vue 3
+---
+
+# Vue 3
+
+gp-grid provides official Vue 3 bindings through the `gp-grid-vue` package.
+
+## Quick Start
+
+```bash tab="npm"
+npm install gp-grid-vue
+```
+
+```bash tab="pnpm"
+pnpm add gp-grid-vue
+```
+
+```bash tab="bun"
+bun add gp-grid-vue
+```
+
+```bash tab="yarn"
+yarn add gp-grid-vue
+```
+
+```vue
+<script setup lang="ts">
+import { Grid, type ColumnDefinition } from "gp-grid-vue";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 150, headerName: "Name" },
+  { field: "email", cellDataType: "text", width: 250, headerName: "Email" },
+];
+
+const data = [
+  { id: 1, name: "Giovanni", email: "giovanni@example.com" },
+  { id: 2, name: "Luca", email: "luca@example.com" },
+];
+</script>
+
+<template>
+  <div style="width: 800px; height: 400px">
+    <Grid :columns="columns" :row-data="data" :row-height="36" />
+  </div>
+</template>
+```
+
+## Next Steps
+
+<Cards>
+  <Card title="Installation" href="/docs/vue/installation" />
+  <Card title="Basic Usage" href="/docs/vue/basic-usage" />
+  <Card title="Nuxt Integration" href="/docs/vue/nuxt" />
+  <Card title="Examples" href="/docs/vue/examples" />
+  <Card title="API Reference" href="/docs/vue/api" />
+</Cards>

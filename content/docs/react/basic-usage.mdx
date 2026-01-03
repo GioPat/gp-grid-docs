@@ -1,0 +1,154 @@
+---
+title: Basic Usage
+description: Learn the fundamentals of using gp-grid in React
+---
+
+# Basic Usage
+
+This guide covers the fundamentals of using gp-grid in your React application.
+
+## Minimal Example
+
+The simplest grid requires three things: columns, data, and a row height.
+
+```tsx
+import { Grid, type ColumnDefinition } from "gp-grid-react";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 200, headerName: "Name" },
+];
+
+const data = [
+  { id: 1, name: "Giovanni Rossi" },
+  { id: 2, name: "Luca Verdi" },
+];
+
+function MyGrid() {
+  return (
+    <div style={{ width: "100%", height: "400px" }}>
+      <Grid columns={columns} rowData={data} rowHeight={36} />
+    </div>
+  );
+}
+```
+
+## Container Sizing
+
+The grid fills its parent container. Always ensure the parent has explicit dimensions:
+
+```tsx
+// Using CSS
+<div style={{ width: "100%", height: "500px" }}>
+  <Grid columns={columns} rowData={data} rowHeight={36} />
+</div>
+
+// Using Tailwind CSS
+<div className="w-full h-[500px]">
+  <Grid columns={columns} rowData={data} rowHeight={36} />
+</div>
+```
+
+## Column Definitions
+
+Each column requires at minimum a `field`, `cellDataType`, and `width`:
+
+```tsx
+const columns: ColumnDefinition[] = [
+  {
+    field: "id",           // Property name in row data
+    cellDataType: "number", // Data type for formatting
+    width: 80,             // Column width in pixels
+    headerName: "ID",      // Optional display name
+  },
+  {
+    field: "email",
+    cellDataType: "text",
+    width: 250,
+    headerName: "Email Address",
+    editable: true,        // Enable editing
+    sortable: true,        // Enable sorting (default: true)
+    filterable: true,      // Enable filtering (default: true)
+  },
+];
+```
+
+### Cell Data Types
+
+| Type | Description |
+|------|-------------|
+| `text` | String values |
+| `number` | Numeric values |
+| `boolean` | True/false values |
+| `date` | Date objects |
+| `dateString` | Date as ISO string |
+| `dateTime` | DateTime objects |
+| `dateTimeString` | DateTime as ISO string |
+| `object` | Complex objects |
+
+## Dark Mode
+
+Enable dark mode styling with the `darkMode` prop:
+
+```tsx
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  darkMode={true}
+/>
+```
+
+For dynamic theme support with next-themes:
+
+```tsx
+"use client";
+
+import { useTheme } from "next-themes";
+import { Grid } from "gp-grid-react";
+
+function ThemedGrid() {
+  const { resolvedTheme } = useTheme();
+
+  return (
+    <Grid
+      columns={columns}
+      rowData={data}
+      rowHeight={36}
+      darkMode={resolvedTheme === "dark"}
+    />
+  );
+}
+```
+
+## Header Height
+
+By default, the header height equals the row height. Override it with `headerHeight`:
+
+```tsx
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  headerHeight={48}  // Taller header
+/>
+```
+
+## Overscan
+
+Control how many rows are rendered outside the visible viewport for smoother scrolling:
+
+```tsx
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  overscan={5}  // Render 5 extra rows above/below viewport
+/>
+```
+
+## Next Steps
+
+- Learn about [Sorting](/docs/react/examples/sorting) and [Filtering](/docs/react/examples/filtering)
+- Explore [Cell Selection](/docs/react/examples/selection)
+- See the complete [API Reference](/docs/react/api)

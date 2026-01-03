@@ -1,0 +1,214 @@
+---
+title: Column Definition
+description: Configure individual columns
+---
+
+# Column Definition
+
+The `ColumnDefinition` interface defines how each column behaves and appears.
+
+```tsx
+interface ColumnDefinition {
+  field: string;
+  colId?: string;
+  cellDataType: CellDataType;
+  width: number;
+  headerName?: string;
+  editable?: boolean;
+  sortable?: boolean;
+  filterable?: boolean;
+  cellRenderer?: string;
+  editRenderer?: string;
+  headerRenderer?: string;
+}
+```
+
+## Required Properties
+
+### field
+
+**Type:** `string`
+
+The property name in the row data object.
+
+```tsx
+// For data like { id: 1, firstName: "Giovanni" }
+{ field: "firstName", cellDataType: "text", width: 150 }
+```
+
+### cellDataType
+
+**Type:** `CellDataType`
+
+The data type of the cell. Used for formatting, sorting, and filtering.
+
+| Value | Description |
+|-------|-------------|
+| `"text"` | String values |
+| `"number"` | Numeric values |
+| `"boolean"` | Boolean values |
+| `"date"` | Date objects |
+| `"dateString"` | ISO date strings |
+| `"dateTime"` | DateTime objects |
+| `"dateTimeString"` | ISO DateTime strings |
+| `"object"` | Complex objects |
+
+### width
+
+**Type:** `number`
+
+Column width in pixels.
+
+```tsx
+{ field: "email", cellDataType: "text", width: 250 }
+```
+
+## Optional Properties
+
+### colId
+
+**Type:** `string`
+**Default:** Same as `field`
+
+Unique identifier for the column. Useful when multiple columns use the same field.
+
+```tsx
+{
+  field: "price",
+  colId: "originalPrice",
+  cellDataType: "number",
+  width: 100
+}
+```
+
+### headerName
+
+**Type:** `string`
+**Default:** Same as `field`
+
+Display name shown in the column header.
+
+```tsx
+{
+  field: "firstName",
+  headerName: "First Name",
+  cellDataType: "text",
+  width: 150
+}
+```
+
+### editable
+
+**Type:** `boolean`
+**Default:** `false`
+
+Enable inline editing for this column.
+
+```tsx
+{
+  field: "email",
+  cellDataType: "text",
+  width: 250,
+  editable: true
+}
+```
+
+### sortable
+
+**Type:** `boolean`
+**Default:** `true` (when `sortingEnabled` is true on Grid)
+
+Enable sorting for this column.
+
+```tsx
+{
+  field: "id",
+  cellDataType: "number",
+  width: 80,
+  sortable: false  // Disable sorting for this column
+}
+```
+
+### filterable
+
+**Type:** `boolean`
+**Default:** `true`
+
+Enable filtering for this column.
+
+```tsx
+{
+  field: "status",
+  cellDataType: "text",
+  width: 100,
+  filterable: false
+}
+```
+
+### cellRenderer
+
+**Type:** `string`
+
+Key of the cell renderer from the `cellRenderers` registry.
+
+```tsx
+// In column definition
+{ field: "status", cellDataType: "text", width: 100, cellRenderer: "status" }
+
+// On Grid component
+<Grid
+  cellRenderers={{ status: StatusRenderer }}
+  // ...
+/>
+```
+
+### editRenderer
+
+**Type:** `string`
+
+Key of the edit renderer from the `editRenderers` registry.
+
+### headerRenderer
+
+**Type:** `string`
+
+Key of the header renderer from the `headerRenderers` registry.
+
+## Example
+
+```tsx
+const columns: ColumnDefinition[] = [
+  {
+    field: "id",
+    cellDataType: "number",
+    width: 80,
+    headerName: "ID",
+    sortable: true,
+    filterable: false,
+    editable: false,
+  },
+  {
+    field: "name",
+    cellDataType: "text",
+    width: 200,
+    headerName: "Full Name",
+    editable: true,
+  },
+  {
+    field: "salary",
+    cellDataType: "number",
+    width: 120,
+    headerName: "Salary",
+    editable: true,
+    cellRenderer: "currency",
+  },
+  {
+    field: "status",
+    cellDataType: "text",
+    width: 100,
+    headerName: "Status",
+    cellRenderer: "status",
+    editRenderer: "statusDropdown",
+  },
+];
+```

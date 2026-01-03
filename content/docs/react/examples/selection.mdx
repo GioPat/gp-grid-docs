@@ -1,0 +1,47 @@
+---
+title: Selection
+description: Cell and range selection examples
+---
+
+# Selection
+
+gp-grid supports cell selection with range and multi-select capabilities.
+
+## Single Cell Selection
+
+Click any cell to select it. The active cell is highlighted with a distinct border.
+
+## Range Selection
+
+Click and drag to select a range of cells:
+
+1. Click a cell to start
+2. Drag to extend the selection
+3. Release to complete the range
+
+Or use keyboard:
+1. Click a cell
+2. Hold `Shift`
+3. Click another cell to select the range
+
+## Keyboard Navigation
+
+| Key | Action |
+|-----|--------|
+| `Arrow keys` | Move active cell |
+| `Shift + Arrow` | Extend selection |
+| `Tab` | Move to next cell |
+| `Shift + Tab` | Move to previous cell |
+| `Enter` | Move down (or start editing) |
+| `Home` | Go to first cell in row |
+| `End` | Go to last cell in row |
+| `Ctrl + Home` | Go to first cell |
+| `Ctrl + End` | Go to last cell |
+
+## Selection Styling
+
+Selected cells receive distinct styling:
+- **Active cell**: Bold border
+- **Selected range**: Highlighted background
+
+The styling automatically adapts to dark mode when `darkMode={true}`.

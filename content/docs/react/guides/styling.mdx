@@ -1,0 +1,135 @@
+---
+title: Styling
+description: Customize the grid appearance
+---
+
+# Styling
+
+gp-grid includes built-in styles with dark mode support. You can customize the appearance using CSS.
+
+## Dark Mode
+
+Enable dark mode with the `darkMode` prop:
+
+```tsx
+<Grid darkMode={true} ... />
+```
+
+### With next-themes
+
+```tsx
+"use client";
+
+import { useTheme } from "next-themes";
+
+function ThemedGrid() {
+  const { resolvedTheme } = useTheme();
+
+  return (
+    <Grid
+      darkMode={resolvedTheme === "dark"}
+      ...
+    />
+  );
+}
+```
+
+## CSS Classes
+
+The grid uses these CSS classes for styling:
+
+| Class | Description |
+|-------|-------------|
+| `.gp-grid` | Grid container |
+| `.gp-grid-header` | Header row |
+| `.gp-grid-header-cell` | Individual header cell |
+| `.gp-grid-body` | Body container |
+| `.gp-grid-row` | Row container |
+| `.gp-grid-cell` | Individual cell |
+| `.gp-grid-cell--active` | Active cell |
+| `.gp-grid-cell--selected` | Selected cell |
+| `.gp-grid-cell--editing` | Cell in edit mode |
+
+## Custom Styling with CSS
+
+Override styles in your global CSS:
+
+```css
+/* Custom header styling */
+.gp-grid-header {
+  background: linear-gradient(to right, #667eea, #764ba2);
+}
+
+.gp-grid-header-cell {
+  color: white;
+  font-weight: 600;
+}
+
+/* Custom selection colors */
+.gp-grid-cell--active {
+  outline: 2px solid #3b82f6;
+}
+
+.gp-grid-cell--selected {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Alternating row colors */
+.gp-grid-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Dark mode adjustments */
+.dark .gp-grid-row:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+```
+
+## Tailwind CSS
+
+With Tailwind, use `@apply` in your CSS:
+
+```css
+@layer components {
+  .gp-grid-header {
+    @apply bg-gradient-to-r from-purple-500 to-pink-500;
+  }
+
+  .gp-grid-header-cell {
+    @apply text-white font-semibold;
+  }
+
+  .gp-grid-cell--active {
+    @apply ring-2 ring-blue-500;
+  }
+}
+```
+
+## Custom Cell Styling via Renderers
+
+For dynamic styling based on data, use custom renderers:
+
+```tsx
+const ConditionalRenderer = (params: CellRendererParams) => {
+  const value = params.value as number;
+  const color = value >= 100000 ? "text-green-600" : "text-red-600";
+
+  return (
+    <div className={`h-full flex items-center px-2 ${color}`}>
+      ${value.toLocaleString()}
+    </div>
+  );
+};
+```
+
+## Container Styling
+
+Style the grid container for borders, shadows, etc.:
+
+```tsx
+<div className="rounded-lg overflow-hidden border shadow-lg">
+  <Grid ... />
+</div>
+```
+
+The `overflow-hidden` ensures rounded corners are visible.

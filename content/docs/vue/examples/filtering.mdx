@@ -1,0 +1,69 @@
+---
+title: Filtering
+description: Column filtering examples in Vue
+---
+
+# Filtering
+
+gp-grid provides powerful column filtering.
+
+## Basic Filtering
+
+Click the filter icon in a column header to open the filter popup:
+
+```vue
+<script setup lang="ts">
+const columns: ColumnDefinition[] = [
+  {
+    field: "name",
+    cellDataType: "text",
+    width: 150,
+    filterable: true  // Default
+  },
+  {
+    field: "salary",
+    cellDataType: "number",
+    width: 120,
+    filterable: true
+  },
+];
+</script>
+```
+
+## Filter Operators
+
+### Text Filters
+
+| Operator | Description |
+|----------|-------------|
+| `contains` | Value contains text |
+| `notContains` | Value does not contain text |
+| `equals` | Exact match |
+| `notEquals` | Not an exact match |
+| `startsWith` | Value starts with text |
+| `endsWith` | Value ends with text |
+| `blank` | Value is empty |
+| `notBlank` | Value is not empty |
+
+### Number Filters
+
+| Operator | Description |
+|----------|-------------|
+| `=` | Equal to |
+| `!=` | Not equal to |
+| `>` | Greater than |
+| `<` | Less than |
+| `>=` | Greater than or equal |
+| `<=` | Less than or equal |
+| `between` | Within range |
+
+## Disable Filtering
+
+```vue
+<script setup lang="ts">
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, filterable: false },
+  { field: "name", cellDataType: "text", width: 150 },  // filterable by default
+];
+</script>
+```

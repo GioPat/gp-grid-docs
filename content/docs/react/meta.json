@@ -1,0 +1,16 @@
+{
+  "title": "React",
+  "pages": [
+    "index",
+    "installation",
+    "basic-usage",
+    "---Examples---",
+    "examples",
+    "---API Reference---",
+    "api",
+    "---Guides---",
+    "guides",
+    "---",
+    "faq"
+  ]
+}

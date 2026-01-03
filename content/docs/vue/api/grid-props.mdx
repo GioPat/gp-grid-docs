@@ -1,0 +1,151 @@
+---
+title: Grid Props
+description: All props accepted by the Grid component
+---
+
+# Grid Props
+
+All properties accepted by the Vue Grid component. Props use kebab-case in templates.
+
+## Required Props
+
+### columns
+
+**Type:** `ColumnDefinition[]`
+
+Array of column definitions.
+
+```vue
+<template>
+  <Grid :columns="columns" ... />
+</template>
+```
+
+### row-height
+
+**Type:** `number`
+
+Height of each row in pixels.
+
+```vue
+<template>
+  <Grid :row-height="36" ... />
+</template>
+```
+
+## Data Props
+
+### row-data
+
+**Type:** `TData[]`
+
+Array of row data objects.
+
+```vue
+<script setup>
+const data = ref([
+  { id: 1, name: "Giovanni" },
+  { id: 2, name: "Luca" },
+]);
+</script>
+
+<template>
+  <Grid :row-data="data" ... />
+</template>
+```
+
+### data-source
+
+**Type:** `DataSource<TData>`
+
+Data source for advanced data handling.
+
+```vue
+<script setup>
+const dataSource = createClientDataSource(data);
+</script>
+
+<template>
+  <Grid :data-source="dataSource" ... />
+</template>
+```
+
+## Optional Props
+
+### header-height
+
+**Type:** `number`
+**Default:** Same as `row-height`
+
+```vue
+<template>
+  <Grid :header-height="48" ... />
+</template>
+```
+
+### overscan
+
+**Type:** `number`
+**Default:** `3`
+
+Number of rows to render outside viewport.
+
+### sorting-enabled
+
+**Type:** `boolean`
+**Default:** `true`
+
+Enable/disable sorting globally.
+
+### dark-mode
+
+**Type:** `boolean`
+**Default:** `false`
+
+Enable dark mode styling.
+
+### wheel-dampening
+
+**Type:** `number`
+**Default:** `0.1`
+
+Dampening factor for wheel scrolling (0-1).
+
+## Renderer Props
+
+### cell-renderer
+
+**Type:** `VueCellRenderer`
+
+Global cell renderer.
+
+### cell-renderers
+
+**Type:** `Record<string, VueCellRenderer>`
+
+Named cell renderer registry.
+
+### edit-renderer / edit-renderers
+
+Custom edit renderers.
+
+### header-renderer / header-renderers
+
+Custom header renderers.
+
+## Example
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :header-height="48"
+    :overscan="5"
+    :sorting-enabled="true"
+    :dark-mode="isDark"
+    :cell-renderers="{ status: StatusRenderer }"
+  />
+</template>
+```

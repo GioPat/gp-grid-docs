@@ -1,0 +1,55 @@
+---
+title: API Overview
+description: Complete API reference for gp-grid-vue
+---
+
+# API Reference
+
+Complete API documentation for gp-grid-vue.
+
+<Cards>
+  <Card title="Grid Props" href="/docs/vue/api/grid-props">
+    All props accepted by the Grid component
+  </Card>
+  <Card title="Column Definition" href="/docs/vue/api/column-definition">
+    Configure individual columns
+  </Card>
+  <Card title="Data Sources" href="/docs/vue/api/data-sources">
+    Client-side and server-side data handling
+  </Card>
+</Cards>
+
+## Exports
+
+```ts
+// Component
+import { Grid } from "gp-grid-vue";
+
+// Types
+import type {
+  GridProps,
+  ColumnDefinition,
+  CellDataType,
+  CellValue,
+  CellPosition,
+  CellRange,
+  SortDirection,
+  SortModel,
+  FilterModel,
+  DataSource,
+  DataSourceRequest,
+  DataSourceResponse,
+  MutableDataSource,
+  CellRendererParams,
+  EditRendererParams,
+  HeaderRendererParams,
+} from "gp-grid-vue";
+
+// Data Source Factories
+import {
+  createClientDataSource,
+  createDataSourceFromArray,
+  createMutableClientDataSource,
+  createServerDataSource,
+} from "gp-grid-vue";
+```

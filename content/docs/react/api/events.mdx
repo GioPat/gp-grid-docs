@@ -1,0 +1,100 @@
+---
+title: Events
+description: Grid instructions and events
+---
+
+# Events
+
+gp-grid uses an instruction-based architecture. The core emits declarative instructions that the React adapter interprets.
+
+## Instruction Types
+
+The grid emits various instructions during operation:
+
+### Slot Instructions
+
+```tsx
+type CreateSlotInstruction = { type: "CREATE_SLOT"; slotId: string };
+type DestroySlotInstruction = { type: "DESTROY_SLOT"; slotId: string };
+type AssignSlotInstruction = { type: "ASSIGN_SLOT"; slotId: string; rowIndex: number; rowData: Row };
+type MoveSlotInstruction = { type: "MOVE_SLOT"; slotId: string; translateY: number };
+```
+
+### Selection Instructions
+
+```tsx
+type SetActiveCellInstruction = { type: "SET_ACTIVE_CELL"; position: CellPosition | null };
+type SetSelectionRangeInstruction = { type: "SET_SELECTION_RANGE"; range: CellRange | null };
+type UpdateVisibleRangeInstruction = { type: "UPDATE_VISIBLE_RANGE"; start: number; end: number };
+```
+
+### Editing Instructions
+
+```tsx
+type StartEditInstruction = { type: "START_EDIT"; row: number; col: number; initialValue: CellValue };
+type StopEditInstruction = { type: "STOP_EDIT" };
+type CommitEditInstruction = { type: "COMMIT_EDIT"; row: number; col: number; value: CellValue };
+```
+
+### Fill Handle Instructions
+
+```tsx
+type StartFillInstruction = { type: "START_FILL"; sourceRange: CellRange };
+type UpdateFillInstruction = { type: "UPDATE_FILL"; targetRow: number; targetCol: number };
+type CommitFillInstruction = { type: "COMMIT_FILL"; filledCells: Array<{ row: number; col: number; value: CellValue }> };
+type CancelFillInstruction = { type: "CANCEL_FILL" };
+```
+
+### Data Instructions
+
+```tsx
+type DataLoadingInstruction = { type: "DATA_LOADING" };
+type DataLoadedInstruction = { type: "DATA_LOADED"; totalRows: number };
+type DataErrorInstruction = { type: "DATA_ERROR"; error: string };
+```
+
+### Transaction Instructions
+
+```tsx
+type RowsAddedInstruction = { type: "ROWS_ADDED"; count: number; totalRows: number };
+type RowsRemovedInstruction = { type: "ROWS_REMOVED"; count: number; totalRows: number };
+type RowsUpdatedInstruction = { type: "ROWS_UPDATED"; count: number };
+type TransactionProcessedInstruction = { type: "TRANSACTION_PROCESSED"; added: number; removed: number; updated: number };
+```
+
+## Listening to Data Changes
+
+With mutable data sources, subscribe to changes:
+
+```tsx
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,
+  onTransactionProcessed: (result) => {
+    console.log(`Added: ${result.added}, Removed: ${result.removed}, Updated: ${result.updated}`);
+  },
+});
+
+// Or subscribe manually
+const unsubscribe = dataSource.subscribe((result) => {
+  console.log("Data changed:", result);
+});
+
+// Cleanup
+unsubscribe();
+```
+
+## Position Types
+
+```tsx
+interface CellPosition {
+  row: number;
+  col: number;
+}
+
+interface CellRange {
+  startRow: number;
+  startCol: number;
+  endRow: number;
+  endCol: number;
+}
+```

@@ -1,0 +1,119 @@
+---
+title: Data Sources
+description: Client-side and server-side data handling in Vue
+---
+
+# Data Sources
+
+gp-grid provides data source abstractions shared with the React package.
+
+## Basic Usage
+
+```vue
+<script setup>
+const data = ref([
+  { id: 1, name: "Giovanni" },
+  { id: 2, name: "Luca" },
+]);
+</script>
+
+<template>
+  <Grid :row-data="data" ... />
+</template>
+```
+
+## Client Data Source
+
+```vue
+<script setup>
+import { createClientDataSource } from "gp-grid-vue";
+
+const dataSource = createClientDataSource(largeDataset, {
+  useWorker: true,  // Web Worker for sorting
+});
+</script>
+
+<template>
+  <Grid :data-source="dataSource" ... />
+</template>
+```
+
+## Mutable Data Source
+
+For CRUD operations:
+
+```vue
+<script setup>
+import { createMutableClientDataSource } from "gp-grid-vue";
+
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,
+});
+
+function addRow() {
+  dataSource.addRows([{ id: Date.now(), name: "New" }]);
+}
+
+function updateRow(id: number, name: string) {
+  dataSource.updateCell(id, "name", name);
+}
+
+function deleteRow(id: number) {
+  dataSource.removeRows([id]);
+}
+</script>
+```
+
+## Server Data Source
+
+```vue
+<script setup>
+import { createServerDataSource } from "gp-grid-vue";
+
+const dataSource = createServerDataSource(async (request) => {
+  const response = await fetch("/api/data", {
+    method: "POST",
+    body: JSON.stringify(request),
+  });
+  return response.json();
+});
+</script>
+
+<template>
+  <Grid :data-source="dataSource" ... />
+</template>
+```
+
+## With Nuxt useFetch
+
+```vue
+<script setup>
+const dataSource = createServerDataSource(async (request) => {
+  return await $fetch("/api/grid-data", {
+    method: "POST",
+    body: request,
+  });
+});
+</script>
+```
+
+## Reactive Updates
+
+Data sources work with Vue's reactivity:
+
+```vue
+<script setup>
+const data = ref<User[]>([]);
+
+// Fetch initial data
+onMounted(async () => {
+  data.value = await fetchUsers();
+});
+
+// Grid automatically updates when data.value changes
+</script>
+
+<template>
+  <Grid :row-data="data" ... />
+</template>
+```

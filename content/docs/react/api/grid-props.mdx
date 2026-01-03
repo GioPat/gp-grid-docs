@@ -1,0 +1,190 @@
+---
+title: Grid Props
+description: All props accepted by the Grid component
+---
+
+# Grid Props
+
+The `GridProps` interface defines all properties accepted by the Grid component.
+
+```tsx
+interface GridProps<TData extends Row = Row> {
+  columns: ColumnDefinition[];
+  dataSource?: DataSource<TData>;
+  rowData?: TData[];
+  rowHeight: number;
+  headerHeight?: number;
+  overscan?: number;
+  sortingEnabled?: boolean;
+  darkMode?: boolean;
+  wheelDampening?: number;
+  cellRenderers?: Record<string, ReactCellRenderer>;
+  editRenderers?: Record<string, ReactEditRenderer>;
+  headerRenderers?: Record<string, ReactHeaderRenderer>;
+  cellRenderer?: ReactCellRenderer;
+  editRenderer?: ReactEditRenderer;
+  headerRenderer?: ReactHeaderRenderer;
+}
+```
+
+## Required Props
+
+### columns
+
+**Type:** `ColumnDefinition[]`
+
+Array of column definitions. See [Column Definition](/docs/react/api/column-definition) for details.
+
+```tsx
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80 },
+  { field: "name", cellDataType: "text", width: 200 },
+];
+```
+
+### rowHeight
+
+**Type:** `number`
+
+Height of each row in pixels.
+
+```tsx
+<Grid columns={columns} rowData={data} rowHeight={36} />
+```
+
+## Data Props
+
+### rowData
+
+**Type:** `TData[]`
+
+Array of row data objects. This is the simplest way to provide data.
+
+```tsx
+const data = [
+  { id: 1, name: "Giovanni" },
+  { id: 2, name: "Luca" },
+];
+
+<Grid columns={columns} rowData={data} rowHeight={36} />
+```
+
+### dataSource
+
+**Type:** `DataSource<TData>`
+
+Data source for advanced data handling. Use this for server-side data or when you need mutation capabilities. See [Data Sources](/docs/react/api/data-sources).
+
+```tsx
+const dataSource = createClientDataSource(data);
+
+<Grid columns={columns} dataSource={dataSource} rowHeight={36} />
+```
+
+## Optional Props
+
+### headerHeight
+
+**Type:** `number`
+**Default:** Same as `rowHeight`
+
+Height of the header row in pixels.
+
+```tsx
+<Grid columns={columns} rowData={data} rowHeight={36} headerHeight={48} />
+```
+
+### overscan
+
+**Type:** `number`
+**Default:** `3`
+
+Number of rows to render outside the visible viewport. Higher values improve scroll smoothness at the cost of more DOM elements.
+
+```tsx
+<Grid columns={columns} rowData={data} rowHeight={36} overscan={5} />
+```
+
+### sortingEnabled
+
+**Type:** `boolean`
+**Default:** `true`
+
+Enable or disable sorting globally.
+
+```tsx
+<Grid columns={columns} rowData={data} rowHeight={36} sortingEnabled={false} />
+```
+
+### darkMode
+
+**Type:** `boolean`
+**Default:** `false`
+
+Enable dark mode styling.
+
+```tsx
+<Grid columns={columns} rowData={data} rowHeight={36} darkMode={true} />
+```
+
+### wheelDampening
+
+**Type:** `number`
+**Default:** `0.1`
+
+Dampening factor for wheel scrolling (0-1). Lower values = smoother but slower scrolling.
+
+```tsx
+<Grid columns={columns} rowData={data} rowHeight={36} wheelDampening={0.2} />
+```
+
+## Renderer Props
+
+### cellRenderer
+
+**Type:** `ReactCellRenderer`
+
+Global cell renderer applied to all cells.
+
+```tsx
+const MyCellRenderer = (params: CellRendererParams) => (
+  <div>{params.value?.toString()}</div>
+);
+
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  cellRenderer={MyCellRenderer}
+/>
+```
+
+### cellRenderers
+
+**Type:** `Record<string, ReactCellRenderer>`
+
+Registry of named cell renderers. Reference by key in column definitions.
+
+```tsx
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  cellRenderers={{
+    status: StatusRenderer,
+    currency: CurrencyRenderer,
+  }}
+/>
+```
+
+### editRenderer / editRenderers
+
+**Type:** `ReactEditRenderer` / `Record<string, ReactEditRenderer>`
+
+Custom edit renderers for cells in edit mode.
+
+### headerRenderer / headerRenderers
+
+**Type:** `ReactHeaderRenderer` / `Record<string, ReactHeaderRenderer>`
+
+Custom header renderers.

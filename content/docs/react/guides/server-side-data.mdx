@@ -1,0 +1,227 @@
+---
+title: Server-Side Data
+description: Integrate with server-side sorting, filtering, and pagination
+---
+
+# Server-Side Data
+
+For very large datasets or when data must remain on the server, use server-side data operations.
+
+## When to Use Server-Side
+
+- Dataset too large to load into browser memory
+- Data requires real-time updates from server
+- Complex filtering/sorting logic on server
+- Security requirements to keep data server-side
+
+## Basic Setup
+
+```tsx
+import { Grid, createServerDataSource } from "gp-grid-react";
+
+const dataSource = createServerDataSource(async (request) => {
+  const response = await fetch("/api/grid-data", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+
+  return response.json();
+});
+
+function ServerGrid() {
+  return (
+    <Grid
+      columns={columns}
+      dataSource={dataSource}
+      rowHeight={36}
+    />
+  );
+}
+```
+
+## Request Format
+
+The server receives a request object:
+
+```tsx
+interface DataSourceRequest {
+  pagination: {
+    pageIndex: number;  // Current page (0-indexed)
+    pageSize: number;   // Rows per page
+  };
+  sort?: SortModel[];   // Sort configuration
+  filter?: FilterModel; // Filter configuration
+}
+
+// Example request
+{
+  pagination: { pageIndex: 0, pageSize: 100 },
+  sort: [{ colId: "name", direction: "asc" }],
+  filter: {
+    salary: {
+      conditions: [{ type: "number", operator: ">", value: 50000 }],
+      combination: "and"
+    }
+  }
+}
+```
+
+## Response Format
+
+Return rows and total count:
+
+```tsx
+interface DataSourceResponse<TData> {
+  rows: TData[];    // Current page of data
+  totalRows: number; // Total rows matching filters
+}
+
+// Example response
+{
+  rows: [
+    { id: 1, name: "Giovanni", salary: 75000 },
+    { id: 2, name: "Luca", salary: 82000 },
+    // ...
+  ],
+  totalRows: 10000
+}
+```
+
+## Express.js Example
+
+```ts
+// server.ts
+import express from "express";
+
+app.post("/api/grid-data", async (req, res) => {
+  const { pagination, sort, filter } = req.body;
+
+  // Build database query
+  let query = db.select().from(employees);
+
+  // Apply filters
+  if (filter) {
+    for (const [field, model] of Object.entries(filter)) {
+      for (const condition of model.conditions) {
+        if (condition.type === "number") {
+          switch (condition.operator) {
+            case ">":
+              query = query.where(field, ">", condition.value);
+              break;
+            case "<":
+              query = query.where(field, "<", condition.value);
+              break;
+            // ... other operators
+          }
+        }
+        // ... handle other types
+      }
+    }
+  }
+
+  // Apply sorting
+  if (sort?.length) {
+    for (const s of sort) {
+      query = query.orderBy(s.colId, s.direction);
+    }
+  }
+
+  // Get total count
+  const totalRows = await query.clone().count();
+
+  // Apply pagination
+  const { pageIndex, pageSize } = pagination;
+  query = query.offset(pageIndex * pageSize).limit(pageSize);
+
+  const rows = await query;
+
+  res.json({ rows, totalRows });
+});
+```
+
+## Handling Sort Models
+
+```tsx
+// SortModel structure
+type SortModel = {
+  colId: string;
+  direction: "asc" | "desc";
+};
+
+// Multiple columns (for multi-sort)
+[
+  { colId: "department", direction: "asc" },
+  { colId: "salary", direction: "desc" }
+]
+```
+
+## Handling Filter Models
+
+```tsx
+// FilterModel structure
+type FilterModel = Record<string, ColumnFilterModel>;
+
+// ColumnFilterModel
+{
+  conditions: FilterCondition[];
+  combination: "and" | "or";
+}
+
+// Example: salary > 50000 AND salary < 100000
+{
+  salary: {
+    conditions: [
+      { type: "number", operator: ">", value: 50000 },
+      { type: "number", operator: "<", value: 100000 }
+    ],
+    combination: "and"
+  }
+}
+```
+
+## Error Handling
+
+```tsx
+const dataSource = createServerDataSource(async (request) => {
+  try {
+    const response = await fetch("/api/grid-data", {
+      method: "POST",
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Failed to fetch grid data:", error);
+    // Return empty result on error
+    return { rows: [], totalRows: 0 };
+  }
+});
+```
+
+## Caching Considerations
+
+For better UX, consider caching pages:
+
+```tsx
+const cache = new Map<string, DataSourceResponse>();
+
+const dataSource = createServerDataSource(async (request) => {
+  const cacheKey = JSON.stringify(request);
+
+  if (cache.has(cacheKey)) {
+    return cache.get(cacheKey)!;
+  }
+
+  const result = await fetchFromServer(request);
+  cache.set(cacheKey, result);
+
+  return result;
+});
+```
+
+Clear cache when data changes on the server.

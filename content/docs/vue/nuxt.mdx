@@ -1,0 +1,208 @@
+---
+title: Nuxt Integration
+description: Using gp-grid with Nuxt 3
+---
+
+# Nuxt Integration
+
+gp-grid works seamlessly with Nuxt 3. This guide covers Nuxt-specific setup and patterns.
+
+## Installation
+
+```bash
+pnpm add gp-grid-vue
+```
+
+## Basic Usage
+
+Create a component or use directly in pages:
+
+```vue
+<!-- pages/grid.vue -->
+<script setup lang="ts">
+import { Grid, type ColumnDefinition } from "gp-grid-vue";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 200, headerName: "Name" },
+];
+
+const { data } = await useFetch("/api/users");
+</script>
+
+<template>
+  <div class="h-[500px]">
+    <Grid
+      v-if="data"
+      :columns="columns"
+      :row-data="data"
+      :row-height="36"
+    />
+  </div>
+</template>
+```
+
+## Client-Only Rendering
+
+Since gp-grid requires browser APIs, wrap it in `<ClientOnly>` for SSR:
+
+```vue
+<template>
+  <ClientOnly>
+    <div class="h-[500px]">
+      <Grid :columns="columns" :row-data="data" :row-height="36" />
+    </div>
+    <template #fallback>
+      <div class="h-[500px] flex items-center justify-center">
+        Loading grid...
+      </div>
+    </template>
+  </ClientOnly>
+</template>
+```
+
+## Dark Mode with Color Mode
+
+Using `@nuxtjs/color-mode`:
+
+```vue
+<script setup lang="ts">
+import { Grid } from "gp-grid-vue";
+
+const colorMode = useColorMode();
+const isDark = computed(() => colorMode.value === "dark");
+</script>
+
+<template>
+  <ClientOnly>
+    <Grid
+      :columns="columns"
+      :row-data="data"
+      :row-height="36"
+      :dark-mode="isDark"
+    />
+  </ClientOnly>
+</template>
+```
+
+## Server-Side Data with API Routes
+
+### API Route
+
+```ts
+// server/api/grid-data.post.ts
+import { defineEventHandler, readBody } from "h3";
+
+export default defineEventHandler(async (event) => {
+  const { pagination, sort, filter } = await readBody(event);
+
+  // Query your database
+  const results = await db.query({
+    offset: pagination.pageIndex * pagination.pageSize,
+    limit: pagination.pageSize,
+    orderBy: sort,
+    where: filter,
+  });
+
+  return {
+    rows: results.data,
+    totalRows: results.total,
+  };
+});
+```
+
+### Component
+
+```vue
+<script setup lang="ts">
+import { Grid, createServerDataSource } from "gp-grid-vue";
+
+const dataSource = createServerDataSource(async (request) => {
+  return await $fetch("/api/grid-data", {
+    method: "POST",
+    body: request,
+  });
+});
+</script>
+
+<template>
+  <ClientOnly>
+    <div class="h-[500px]">
+      <Grid
+        :columns="columns"
+        :data-source="dataSource"
+        :row-height="36"
+      />
+    </div>
+  </ClientOnly>
+</template>
+```
+
+## Composable Pattern
+
+Create a reusable composable:
+
+```ts
+// composables/useGrid.ts
+import { type ColumnDefinition } from "gp-grid-vue";
+
+export function useGrid<T>(columns: ColumnDefinition[], fetchFn: () => Promise<T[]>) {
+  const data = ref<T[]>([]);
+  const loading = ref(true);
+  const error = ref<Error | null>(null);
+
+  async function refresh() {
+    loading.value = true;
+    try {
+      data.value = await fetchFn();
+    } catch (e) {
+      error.value = e as Error;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  onMounted(refresh);
+
+  return {
+    columns,
+    data,
+    loading,
+    error,
+    refresh,
+  };
+}
+```
+
+Usage:
+
+```vue
+<script setup lang="ts">
+const { columns, data, loading } = useGrid(
+  [
+    { field: "id", cellDataType: "number", width: 80 },
+    { field: "name", cellDataType: "text", width: 200 },
+  ],
+  () => $fetch("/api/users")
+);
+</script>
+
+<template>
+  <ClientOnly>
+    <div v-if="loading">Loading...</div>
+    <Grid v-else :columns="columns" :row-data="data" :row-height="36" />
+  </ClientOnly>
+</template>
+```
+
+## TypeScript Configuration
+
+Ensure TypeScript is configured in `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  typescript: {
+    strict: true,
+  },
+});
+```

@@ -1,0 +1,68 @@
+---
+title: Performance
+description: Performance tips for Vue
+---
+
+# Performance
+
+Performance tips specific to Vue 3.
+
+## Avoid Reactive Overhead
+
+For large datasets, use `shallowRef` instead of `ref`:
+
+```vue
+<script setup>
+import { shallowRef } from "vue";
+
+// Good: shallow reactivity for large arrays
+const data = shallowRef(generateLargeDataset(1_000_000));
+
+// Update by replacing the entire array
+function refresh() {
+  data.value = fetchNewData();
+}
+</script>
+```
+
+## Memoize Computed Columns
+
+```vue
+<script setup>
+import { computed } from "vue";
+
+// Columns rarely change, so memoize them
+const columns = computed(() => [
+  { field: "id", cellDataType: "number", width: 80 },
+  { field: "name", cellDataType: "text", width: 200 },
+]);
+</script>
+```
+
+## Use Web Workers
+
+The client data source uses Web Workers for sorting by default:
+
+```vue
+<script setup>
+const dataSource = createClientDataSource(largeData, {
+  useWorker: true,  // Default
+});
+</script>
+```
+
+## Virtual Scrolling
+
+gp-grid handles this automatically. Performance is constant regardless of data size.
+
+## Server-Side for Massive Data
+
+For very large datasets, use server-side data:
+
+```vue
+<script setup>
+const dataSource = createServerDataSource(async (request) => {
+  return await $fetch("/api/data", { method: "POST", body: request });
+});
+</script>
+```

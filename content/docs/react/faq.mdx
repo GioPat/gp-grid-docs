@@ -1,0 +1,139 @@
+---
+title: FAQ
+description: Frequently asked questions
+---
+
+# FAQ
+
+Frequently asked questions about gp-grid-react.
+
+## General
+
+### What browsers are supported?
+
+gp-grid supports all modern browsers:
+- Chrome/Edge 88+
+- Firefox 78+
+- Safari 14+
+
+### Is gp-grid free to use?
+
+Yes, gp-grid is open source and free to use in both personal and commercial projects.
+
+### What's the maximum dataset size?
+
+There's no practical limit. The virtual scrolling architecture means performance is consistent regardless of dataset size. We've tested with 2 million rows.
+
+## Performance
+
+### Why is my grid slow to render?
+
+Common causes:
+
+1. **Not using memoization**: Wrap `rowData` in `useMemo`:
+   ```tsx
+   const rows = useMemo(() => data.map(transform), [data]);
+   ```
+
+2. **Heavy custom renderers**: Keep renderers simple, pre-compute values.
+
+3. **Too many columns**: Consider horizontal virtualization for 50+ columns.
+
+### How do I improve scroll performance?
+
+- Increase `overscan` for smoother scrolling (at cost of more DOM nodes)
+- Simplify custom renderers
+- Ensure container has explicit dimensions
+
+## Styling
+
+### How do I style alternating rows?
+
+```css
+.gp-grid-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+```
+
+### How do I change selection colors?
+
+```css
+.gp-grid-cell--active {
+  outline-color: #your-color;
+}
+
+.gp-grid-cell--selected {
+  background-color: rgba(your-rgb, 0.1);
+}
+```
+
+## Data
+
+### How do I update a single cell?
+
+Use a mutable data source:
+
+```tsx
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,
+});
+
+dataSource.updateCell(rowId, "fieldName", newValue);
+```
+
+### How do I refresh data from the server?
+
+For server data sources, the grid automatically fetches when sort/filter changes. For manual refresh, recreate the data source:
+
+```tsx
+const [key, setKey] = useState(0);
+
+// Refresh
+setKey(k => k + 1);
+
+return <Grid key={key} dataSource={dataSource} ... />;
+```
+
+### Can I use async data loading?
+
+Yes, use `createServerDataSource` which accepts an async function.
+
+## Features
+
+### Does gp-grid support column resizing?
+
+Column resizing is on the roadmap. Currently, columns have fixed widths defined in the column definition.
+
+### Does gp-grid support row grouping?
+
+Row grouping is planned for a future release.
+
+### Can I export to Excel/CSV?
+
+Export functionality is not built-in. You can access the data source and implement export yourself:
+
+```tsx
+const exportToCSV = () => {
+  const rows = dataSource.getAllRows(); // Your implementation
+  // Convert to CSV and download
+};
+```
+
+## Troubleshooting
+
+### Grid shows no data
+
+1. Check that `rowData` or `dataSource` is provided
+2. Verify the container has explicit height
+3. Check browser console for errors
+
+### Cells don't render correctly
+
+1. Ensure `field` in column definition matches property name in data
+2. Check `cellDataType` matches actual data type
+
+### Sorting doesn't work
+
+1. Verify `sortingEnabled` is not set to `false`
+2. Check column has `sortable: true` (default)
+3. For server-side data, ensure server handles sort request

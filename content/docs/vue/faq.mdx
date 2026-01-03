@@ -1,0 +1,108 @@
+---
+title: FAQ
+description: Frequently asked questions for Vue
+---
+
+# FAQ
+
+Frequently asked questions about gp-grid-vue.
+
+## General
+
+### Does gp-grid work with Vue 2?
+
+No, gp-grid-vue requires Vue 3.3 or higher. Vue 2 is not supported.
+
+### Does it work with Nuxt 3?
+
+Yes, gp-grid works great with Nuxt 3. See the [Nuxt Integration](/docs/vue/nuxt) guide.
+
+### Is TypeScript required?
+
+No, but strongly recommended. gp-grid includes built-in TypeScript definitions.
+
+## Reactivity
+
+### Why isn't my grid updating?
+
+1. **Using `shallowRef`**: You need to replace the entire array:
+   ```ts
+   data.value = [...data.value, newItem];  // Works
+   data.value.push(newItem);  // Won't trigger update
+   ```
+
+2. **Using `ref`**: Should work automatically, check console for errors.
+
+3. **Using mutable data source**: Make sure to call the mutation methods:
+   ```ts
+   dataSource.addRows([newItem]);  // Correct
+   ```
+
+### How do I force a refresh?
+
+```vue
+<script setup>
+const key = ref(0);
+
+function refresh() {
+  key.value++;
+}
+</script>
+
+<template>
+  <Grid :key="key" ... />
+</template>
+```
+
+## SSR / Nuxt
+
+### Why do I get hydration errors?
+
+gp-grid requires browser APIs. Wrap it in `<ClientOnly>`:
+
+```vue
+<template>
+  <ClientOnly>
+    <Grid ... />
+  </ClientOnly>
+</template>
+```
+
+### How do I show a loading state during SSR?
+
+```vue
+<template>
+  <ClientOnly>
+    <Grid ... />
+    <template #fallback>
+      <div class="h-[500px] animate-pulse bg-gray-200" />
+    </template>
+  </ClientOnly>
+</template>
+```
+
+## Styling
+
+### How do I override styles in scoped CSS?
+
+Use `:deep()`:
+
+```vue
+<style scoped>
+:deep(.gp-grid-header) {
+  background: blue;
+}
+</style>
+```
+
+## Performance
+
+### Is there a row limit?
+
+No practical limit. We've tested with 2 million rows. Performance is constant due to virtual scrolling.
+
+### Why is initial render slow?
+
+- Generate data outside the component or use `useMemo`
+- Use `shallowRef` for large arrays
+- Check for expensive custom renderers

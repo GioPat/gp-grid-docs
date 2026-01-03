@@ -1,0 +1,17 @@
+{
+  "title": "Vue",
+  "pages": [
+    "index",
+    "installation",
+    "basic-usage",
+    "nuxt",
+    "---Examples---",
+    "examples",
+    "---API Reference---",
+    "api",
+    "---Guides---",
+    "guides",
+    "---",
+    "faq"
+  ]
+}

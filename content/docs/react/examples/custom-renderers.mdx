@@ -1,0 +1,126 @@
+---
+title: Custom Renderers
+description: Custom cell and header rendering
+---
+
+# Custom Renderers
+
+Customize how cells and headers are rendered with custom renderer functions.
+
+## Cell Renderers
+
+### Global Cell Renderer
+
+Apply a renderer to all cells:
+
+```tsx
+import { Grid, type CellRendererParams } from "gp-grid-react";
+
+const MyCellRenderer = (params: CellRendererParams) => {
+  return (
+    <div className="flex items-center h-full px-2">
+      {params.value?.toString()}
+    </div>
+  );
+};
+
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  cellRenderer={MyCellRenderer}
+/>
+```
+
+### Per-Column Renderers
+
+Register renderers by key and reference them in columns:
+
+```tsx
+const StatusRenderer = (params: CellRendererParams) => {
+  const status = params.value as string;
+  const color = status === "Active" ? "green" : "red";
+
+  return (
+    <div className="flex items-center h-full px-2">
+      <span
+        className="w-2 h-2 rounded-full mr-2"
+        style={{ backgroundColor: color }}
+      />
+      {status}
+    </div>
+  );
+};
+
+const columns: ColumnDefinition[] = [
+  { field: "name", cellDataType: "text", width: 150 },
+  {
+    field: "status",
+    cellDataType: "text",
+    width: 120,
+    cellRenderer: "status"  // Reference the key
+  },
+];
+
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  cellRenderers={{ status: StatusRenderer }}
+/>
+```
+
+## Header Renderers
+
+Customize column headers:
+
+```tsx
+import { type HeaderRendererParams } from "gp-grid-react";
+
+const MyHeaderRenderer = (params: HeaderRendererParams) => {
+  return (
+    <div className="flex items-center justify-between w-full h-full px-2">
+      <span className="font-bold">{params.column.headerName}</span>
+      {params.sortDirection && (
+        <span>{params.sortDirection === "asc" ? "▲" : "▼"}</span>
+      )}
+    </div>
+  );
+};
+
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  headerRenderer={MyHeaderRenderer}
+/>
+```
+
+## Renderer Parameters
+
+### CellRendererParams
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `value` | `CellValue` | Current cell value |
+| `rowData` | `TData` | Full row data object |
+| `column` | `ColumnDefinition` | Column definition |
+| `rowIndex` | `number` | Row index |
+| `colIndex` | `number` | Column index |
+| `isActive` | `boolean` | Is the active cell |
+| `isSelected` | `boolean` | Is in selection range |
+| `isEditing` | `boolean` | Is being edited |
+
+### HeaderRendererParams
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `column` | `ColumnDefinition` | Column definition |
+| `colIndex` | `number` | Column index |
+| `sortDirection` | `SortDirection \| undefined` | Current sort direction |
+| `sortIndex` | `number \| undefined` | Multi-sort order |
+| `sortable` | `boolean` | Is column sortable |
+| `filterable` | `boolean` | Is column filterable |
+| `hasFilter` | `boolean` | Has active filter |
+| `onSort` | `function` | Trigger sort |
+| `onFilterClick` | `function` | Open filter popup |

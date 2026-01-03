@@ -1,0 +1,107 @@
+---
+title: Editing
+description: Cell editing and fill handle examples
+---
+
+# Editing
+
+gp-grid supports inline cell editing with Excel-like fill handle.
+
+## Enable Editing
+
+Set `editable: true` on column definitions:
+
+```tsx
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80 },  // Not editable
+  {
+    field: "name",
+    cellDataType: "text",
+    width: 150,
+    editable: true  // Editable
+  },
+  {
+    field: "salary",
+    cellDataType: "number",
+    width: 120,
+    editable: true
+  },
+];
+```
+
+## Start Editing
+
+Several ways to start editing a cell:
+
+| Action | Description |
+|--------|-------------|
+| Double-click | Open editor with current value |
+| `Enter` | Open editor with current value |
+| `F2` | Open editor with current value |
+| Start typing | Open editor with typed character |
+
+## Commit or Cancel
+
+| Action | Description |
+|--------|-------------|
+| `Enter` | Commit changes and move down |
+| `Tab` | Commit changes and move right |
+| `Escape` | Cancel changes |
+| Click outside | Commit changes |
+
+## Fill Handle
+
+The fill handle appears at the bottom-right corner of the selected range:
+
+1. Select a cell or range
+2. Drag the fill handle (small square in corner)
+3. Release to fill the target cells
+
+The fill handle copies values from the source range to the target cells.
+
+## Custom Edit Renderers
+
+Provide custom editors for complex input:
+
+```tsx
+import { Grid, type EditRendererParams } from "gp-grid-react";
+
+const CustomEditor = (params: EditRendererParams) => {
+  return (
+    <select
+      autoFocus
+      value={params.value as string}
+      onChange={(e) => {
+        params.onValueChange(e.target.value);
+        params.onCommit();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") params.onCancel();
+      }}
+    >
+      <option value="Engineering">Engineering</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Sales">Sales</option>
+    </select>
+  );
+};
+
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  editRenderers={{ department: CustomEditor }}
+/>
+```
+
+Then reference it in the column definition:
+
+```tsx
+{
+  field: "department",
+  cellDataType: "text",
+  width: 140,
+  editable: true,
+  editRenderer: "department"  // Key from editRenderers
+}
+```

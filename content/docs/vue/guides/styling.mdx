@@ -1,0 +1,87 @@
+---
+title: Styling
+description: Styling the grid in Vue
+---
+
+# Styling
+
+Customize grid appearance in Vue applications.
+
+## Dark Mode
+
+```vue
+<script setup>
+import { useDark } from "@vueuse/core";
+
+const isDark = useDark();
+</script>
+
+<template>
+  <Grid :dark-mode="isDark" ... />
+</template>
+```
+
+### With Nuxt Color Mode
+
+```vue
+<script setup>
+const colorMode = useColorMode();
+const isDark = computed(() => colorMode.value === "dark");
+</script>
+
+<template>
+  <Grid :dark-mode="isDark" ... />
+</template>
+```
+
+## CSS Customization
+
+```css
+/* In your global styles */
+.gp-grid-header {
+  background: linear-gradient(to right, #667eea, #764ba2);
+}
+
+.gp-grid-cell--active {
+  outline: 2px solid #3b82f6;
+}
+
+.gp-grid-row:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+```
+
+## Scoped Styles
+
+Use `:deep()` for scoped style overrides:
+
+```vue
+<style scoped>
+:deep(.gp-grid-header) {
+  background-color: var(--primary);
+}
+
+:deep(.gp-grid-cell--active) {
+  outline-color: var(--accent);
+}
+</style>
+```
+
+## Container Styling
+
+```vue
+<template>
+  <div class="grid-container">
+    <Grid ... />
+  </div>
+</template>
+
+<style scoped>
+.grid-container {
+  height: 500px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+</style>
+```

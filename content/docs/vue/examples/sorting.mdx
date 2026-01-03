@@ -1,0 +1,74 @@
+---
+title: Sorting
+description: Multi-column sorting examples in Vue
+---
+
+# Sorting
+
+gp-grid supports single and multi-column sorting.
+
+## Basic Sorting
+
+Sorting is enabled by default. Click a column header to sort:
+
+```vue
+<script setup lang="ts">
+import { Grid, type ColumnDefinition } from "gp-grid-vue";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 150, headerName: "Name" },
+  { field: "salary", cellDataType: "number", width: 120, headerName: "Salary" },
+];
+
+const data = ref([/* your data */]);
+</script>
+
+<template>
+  <div style="height: 400px">
+    <Grid
+      :columns="columns"
+      :row-data="data"
+      :row-height="36"
+      :sorting-enabled="true"
+    />
+  </div>
+</template>
+```
+
+## Multi-Column Sorting
+
+Hold `Shift` while clicking headers to sort by multiple columns.
+
+## Disable Sorting
+
+### Globally
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :sorting-enabled="false"
+  />
+</template>
+```
+
+### Per Column
+
+```vue
+<script setup lang="ts">
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, sortable: false },
+  { field: "name", cellDataType: "text", width: 150, sortable: true },
+];
+</script>
+```
+
+## Sort Indicators
+
+The header displays sort direction:
+- `▲` - Ascending
+- `▼` - Descending
+- Number badge for multi-column sort order

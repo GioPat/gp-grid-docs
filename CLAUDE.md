@@ -1,0 +1,3 @@
+- This is fumadocs project (based on NextJS) documenting the gp-grid library.
+- Follow the atomic design principles
+- It uses bun as runtime and should support two languages: english and italian.

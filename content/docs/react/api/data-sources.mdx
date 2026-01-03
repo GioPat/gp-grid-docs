@@ -1,0 +1,173 @@
+---
+title: Data Sources
+description: Client-side and server-side data handling
+---
+
+# Data Sources
+
+gp-grid provides a flexible data source abstraction for both client-side and server-side data handling.
+
+## Basic Usage with rowData
+
+The simplest approach is using the `rowData` prop directly:
+
+```tsx
+const data = [
+  { id: 1, name: "Giovanni" },
+  { id: 2, name: "Luca" },
+];
+
+<Grid columns={columns} rowData={data} rowHeight={36} />
+```
+
+This internally creates a client data source.
+
+## Client Data Source
+
+For more control, use `createClientDataSource`:
+
+```tsx
+import { Grid, createClientDataSource } from "gp-grid-react";
+
+const data = generateLargeDataset(1000000);
+const dataSource = createClientDataSource(data);
+
+<Grid columns={columns} dataSource={dataSource} rowHeight={36} />
+```
+
+### Options
+
+```tsx
+interface ClientDataSourceOptions<TData> {
+  getFieldValue?: (row: TData, field: string) => CellValue;
+  useWorker?: boolean;
+}
+```
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `getFieldValue` | - | Custom accessor for nested properties |
+| `useWorker` | `true` | Use Web Worker for sorting large datasets |
+
+### Nested Properties
+
+```tsx
+const data = [
+  { id: 1, user: { name: "Giovanni", email: "g@example.com" } },
+];
+
+const dataSource = createClientDataSource(data, {
+  getFieldValue: (row, field) => {
+    if (field === "userName") return row.user.name;
+    if (field === "userEmail") return row.user.email;
+    return row[field as keyof typeof row];
+  },
+});
+```
+
+## Mutable Data Source
+
+For CRUD operations, use `createMutableClientDataSource`:
+
+```tsx
+import { createMutableClientDataSource } from "gp-grid-react";
+
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,  // Required: unique ID accessor
+  debounceMs: 50,             // Batch updates (default: 50)
+});
+
+// Add rows
+dataSource.addRows([{ id: 3, name: "Mario" }]);
+
+// Remove rows
+dataSource.removeRows([1, 2]);
+
+// Update a cell
+dataSource.updateCell(3, "name", "Maria");
+
+// Update a row
+dataSource.updateRow(3, { name: "Maria", email: "maria@example.com" });
+
+// Force immediate processing
+await dataSource.flushTransactions();
+```
+
+### MutableDataSource Interface
+
+```tsx
+interface MutableDataSource<TData> extends DataSource<TData> {
+  addRows(rows: TData[]): void;
+  removeRows(ids: RowId[]): void;
+  updateCell(id: RowId, field: string, value: CellValue): void;
+  updateRow(id: RowId, data: Partial<TData>): void;
+  flushTransactions(): Promise<void>;
+  hasPendingTransactions(): boolean;
+  getDistinctValues(field: string): CellValue[];
+  getRowById(id: RowId): TData | undefined;
+  getTotalRowCount(): number;
+  subscribe(listener: DataChangeListener): () => void;
+}
+```
+
+## Server Data Source
+
+For server-side sorting, filtering, and pagination:
+
+```tsx
+import { createServerDataSource } from "gp-grid-react";
+
+const dataSource = createServerDataSource(async (request) => {
+  const { pagination, sort, filter } = request;
+
+  const response = await fetch("/api/data", {
+    method: "POST",
+    body: JSON.stringify({
+      page: pagination.pageIndex,
+      pageSize: pagination.pageSize,
+      sortBy: sort,
+      filters: filter,
+    }),
+  });
+
+  const result = await response.json();
+
+  return {
+    rows: result.data,
+    totalRows: result.total,
+  };
+});
+
+<Grid columns={columns} dataSource={dataSource} rowHeight={36} />
+```
+
+### Request Interface
+
+```tsx
+interface DataSourceRequest {
+  pagination: {
+    pageIndex: number;
+    pageSize: number;
+  };
+  sort?: SortModel[];
+  filter?: FilterModel;
+}
+```
+
+### Response Interface
+
+```tsx
+interface DataSourceResponse<TData> {
+  rows: TData[];
+  totalRows: number;
+}
+```
+
+## Choosing a Data Source
+
+| Scenario | Recommended |
+|----------|-------------|
+| Small dataset (under 10k rows) | `rowData` prop |
+| Large dataset, client-side | `createClientDataSource` |
+| Editable data with CRUD | `createMutableClientDataSource` |
+| Server-side operations | `createServerDataSource` |

@@ -1,0 +1,176 @@
+---
+title: Basic Usage
+description: Learn the fundamentals of using gp-grid in Vue 3
+---
+
+# Basic Usage
+
+This guide covers the fundamentals of using gp-grid in your Vue 3 application.
+
+## Minimal Example
+
+```vue
+<script setup lang="ts">
+import { Grid, type ColumnDefinition } from "gp-grid-vue";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 200, headerName: "Name" },
+];
+
+const data = [
+  { id: 1, name: "Giovanni Rossi" },
+  { id: 2, name: "Luca Verdi" },
+];
+</script>
+
+<template>
+  <div style="width: 100%; height: 400px">
+    <Grid :columns="columns" :row-data="data" :row-height="36" />
+  </div>
+</template>
+```
+
+## Container Sizing
+
+The grid fills its parent container. Ensure the parent has explicit dimensions:
+
+```vue
+<template>
+  <!-- Using inline styles -->
+  <div style="width: 100%; height: 500px">
+    <Grid :columns="columns" :row-data="data" :row-height="36" />
+  </div>
+
+  <!-- Using Tailwind CSS -->
+  <div class="w-full h-[500px]">
+    <Grid :columns="columns" :row-data="data" :row-height="36" />
+  </div>
+</template>
+```
+
+## Reactive Data
+
+Use `ref` or `reactive` for reactive data:
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+import { Grid, type ColumnDefinition } from "gp-grid-vue";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80 },
+  { field: "name", cellDataType: "text", width: 200 },
+];
+
+const data = ref([
+  { id: 1, name: "Giovanni" },
+  { id: 2, name: "Luca" },
+]);
+
+function addRow() {
+  data.value.push({
+    id: data.value.length + 1,
+    name: "New Person",
+  });
+}
+</script>
+
+<template>
+  <button @click="addRow">Add Row</button>
+  <div style="height: 400px">
+    <Grid :columns="columns" :row-data="data" :row-height="36" />
+  </div>
+</template>
+```
+
+## Column Definitions
+
+```vue
+<script setup lang="ts">
+const columns: ColumnDefinition[] = [
+  {
+    field: "id",
+    cellDataType: "number",
+    width: 80,
+    headerName: "ID",
+  },
+  {
+    field: "email",
+    cellDataType: "text",
+    width: 250,
+    headerName: "Email Address",
+    editable: true,
+    sortable: true,
+    filterable: true,
+  },
+];
+</script>
+```
+
+### Cell Data Types
+
+| Type | Description |
+|------|-------------|
+| `text` | String values |
+| `number` | Numeric values |
+| `boolean` | True/false values |
+| `date` | Date objects |
+| `dateString` | Date as ISO string |
+| `dateTime` | DateTime objects |
+| `dateTimeString` | DateTime as ISO string |
+| `object` | Complex objects |
+
+## Dark Mode
+
+Enable dark mode with the `dark-mode` prop:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :dark-mode="true"
+  />
+</template>
+```
+
+### With VueUse
+
+```vue
+<script setup lang="ts">
+import { useDark } from "@vueuse/core";
+
+const isDark = useDark();
+</script>
+
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :dark-mode="isDark"
+  />
+</template>
+```
+
+## Header Height & Overscan
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="data"
+    :row-height="36"
+    :header-height="48"
+    :overscan="5"
+  />
+</template>
+```
+
+## Next Steps
+
+- Learn about [Sorting](/docs/vue/examples/sorting) and [Filtering](/docs/vue/examples/filtering)
+- Explore [Custom Renderers](/docs/vue/examples/custom-renderers)
+- See the complete [API Reference](/docs/vue/api)

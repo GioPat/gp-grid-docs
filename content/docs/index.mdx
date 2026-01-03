@@ -1,13 +1,41 @@
 ---
-title: Hello World
-description: Your first document
+title: Introduction
+description: A high-performance TypeScript data grid with virtual scrolling
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+# gp-grid
 
-## What is Next?
+A high-performance TypeScript data grid built on three core principles:
+
+1. **Slot-Based Virtual Scrolling** - DOM elements are recycled rather than created/destroyed, maintaining consistent performance regardless of dataset size.
+
+2. **Instruction-Based Architecture** - The core emits declarative instructions that framework adapters interpret, keeping rendering logic framework-agnostic.
+
+3. **DataSource Abstraction** - Clean separation between data operations and UI, supporting both client-side and server-side data handling.
+
+## Features
+
+- Virtual scrolling with slot recycling
+- Cell selection with range and multi-select
+- Multi-column sorting
+- Column filtering with debounced input
+- Cell editing with fill handle
+- Keyboard navigation
+- Custom cell/header renderers
+- Dark mode support
+- Full TypeScript support
+
+## Packages
+
+| Package | Description |
+|---------|-------------|
+| `gp-grid-core` | Framework-agnostic core logic |
+| `gp-grid-react` | Official React bindings |
+| `gp-grid-vue` | Official Vue 3 bindings |
+
+## Get Started
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card title="React" href="/docs/react" />
+  <Card title="Vue" href="/docs/vue" />
 </Cards>

@@ -1,0 +1,138 @@
+---
+title: Performance
+description: Tips for handling large datasets efficiently
+---
+
+# Performance
+
+gp-grid is designed for high performance with large datasets. Here are tips to maximize performance.
+
+## Virtual Scrolling
+
+gp-grid uses slot-based virtual scrolling. Instead of rendering all rows, it maintains a pool of DOM elements (slots) that are recycled as you scroll. This keeps DOM node count constant regardless of data size.
+
+### How It Works
+
+1. Only visible rows plus overscan are rendered
+2. As you scroll, slots are reassigned to new rows
+3. DOM elements are moved via CSS transforms, not recreated
+
+This means 1.5 million rows perform the same as 100 rows.
+
+## Web Workers for Sorting
+
+For large datasets, sorting is automatically offloaded to a Web Worker:
+
+```tsx
+const dataSource = createClientDataSource(data, {
+  useWorker: true  // Default: true
+});
+```
+
+This keeps the main thread responsive during sort operations.
+
+## Memory Considerations
+
+### Row Data Structure
+
+Keep row objects lean. Avoid:
+
+```tsx
+// Bad: nested objects with redundant data
+const rows = data.map(item => ({
+  ...item,
+  computed: expensiveComputation(item),
+  references: { parent: item.parent, children: item.children },
+}));
+```
+
+```tsx
+// Good: flat, minimal structure
+const rows = data.map(item => ({
+  id: item.id,
+  name: item.name,
+  value: item.value,
+}));
+```
+
+### Memoize Row Data
+
+Avoid recreating row arrays on every render:
+
+```tsx
+// Bad: creates new array each render
+function MyGrid() {
+  const rows = data.map(transform);
+  return <Grid rowData={rows} ... />;
+}
+```
+
+```tsx
+// Good: memoized
+function MyGrid() {
+  const rows = useMemo(() => data.map(transform), [data]);
+  return <Grid rowData={rows} ... />;
+}
+```
+
+## Overscan Tuning
+
+The `overscan` prop controls how many extra rows render outside the viewport:
+
+```tsx
+// Fewer DOM nodes, may see flicker on fast scroll
+<Grid overscan={2} ... />
+
+// More DOM nodes, smoother fast scrolling
+<Grid overscan={10} ... />
+
+// Default: 3
+```
+
+## Custom Renderers
+
+Keep renderers simple and avoid heavy computations:
+
+```tsx
+// Bad: expensive operations in renderer
+const SlowRenderer = (params: CellRendererParams) => {
+  const formatted = expensiveFormat(params.value);
+  const validated = complexValidation(params.rowData);
+  return <div>{formatted}</div>;
+};
+```
+
+```tsx
+// Good: minimal renderer
+const FastRenderer = (params: CellRendererParams) => {
+  return <div>{params.value}</div>;
+};
+```
+
+Pre-compute derived values in your data if needed.
+
+## Server-Side Operations
+
+For truly massive datasets (10M+ rows), consider server-side data:
+
+```tsx
+const dataSource = createServerDataSource(async (request) => {
+  // Sorting, filtering, pagination handled by server
+  return fetchFromAPI(request);
+});
+```
+
+This keeps client memory usage minimal since only the visible page is loaded.
+
+## Benchmarks
+
+On a typical modern laptop:
+
+| Rows | Initial Render | Scroll FPS |
+|------|----------------|------------|
+| 1,000 | ~10ms | 60fps |
+| 100,000 | ~50ms | 60fps |
+| 1,000,000 | ~100ms | 60fps |
+| 5,000,000 | ~200ms | 60fps |
+
+Scroll performance is consistent regardless of dataset size due to virtual scrolling.

@@ -1,0 +1,56 @@
+---
+title: Installation
+description: Install gp-grid-vue in your project
+---
+
+# Installation
+
+## Package Manager
+
+Install `gp-grid-vue` using your preferred package manager:
+
+```bash tab="npm"
+npm install gp-grid-vue
+```
+
+```bash tab="pnpm"
+pnpm add gp-grid-vue
+```
+
+```bash tab="bun"
+bun add gp-grid-vue
+```
+
+```bash tab="yarn"
+yarn add gp-grid-vue
+```
+
+## Requirements
+
+- Vue 3.3 or higher
+- TypeScript 5.0+ (recommended)
+
+## Peer Dependencies
+
+The package has the following peer dependencies:
+
+- `vue` >= 3.3.0
+
+## TypeScript
+
+gp-grid is written in TypeScript and includes built-in type definitions:
+
+```vue
+<script setup lang="ts">
+import { Grid, type ColumnDefinition, type GridProps } from "gp-grid-vue";
+</script>
+```
+
+## Vite Configuration
+
+No special configuration needed. The package works out of the box with Vite.
+
+## Next Steps
+
+- See [Basic Usage](/docs/vue/basic-usage) for your first grid
+- Check [Nuxt Integration](/docs/vue/nuxt) for Nuxt-specific setup

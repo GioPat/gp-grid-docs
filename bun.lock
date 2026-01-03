@@ -8,6 +8,7 @@
         "fumadocs-core": "16.4.3",
         "fumadocs-mdx": "14.2.4",
         "fumadocs-ui": "16.4.3",
+        "gp-grid-react": "^0.3.0",
         "lucide-react": "^0.562.0",
         "next": "16.1.1",
         "react": "^19.2.3",
@@ -739,6 +740,10 @@
     "globalthis": ["globalthis@1.0.4", "", { "dependencies": { "define-properties": "^1.2.1", "gopd": "^1.0.1" } }, "sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ=="],
 
     "gopd": ["gopd@1.2.0", "", {}, "sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg=="],
+
+    "gp-grid-core": ["gp-grid-core@0.3.0", "", {}, "sha512-DuWUVyDYKSB23YxAklVt5f209aNEZKemH77HOyoVhwYk4fD2ajIHZfKivC1mONs+67pCV7NaNHjkbuXW5YFrEg=="],
+
+    "gp-grid-react": ["gp-grid-react@0.3.0", "", { "dependencies": { "gp-grid-core": "0.3.0" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.1.1" } }, "sha512-Du48DMvr9lPxLma0QgnpC9irZk01Vs0rNCXTZmAvawpmSpgmyEva1hEMcMh7Ee7LEeVsmxmz5yuXLW2lXUv87A=="],
 
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
 

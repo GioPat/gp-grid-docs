@@ -1,0 +1,64 @@
+---
+title: API Overview
+description: Complete API reference for gp-grid-react
+---
+
+# API Reference
+
+Complete API documentation for gp-grid-react.
+
+<Cards>
+  <Card title="Grid Props" href="/docs/react/api/grid-props">
+    All props accepted by the Grid component
+  </Card>
+  <Card title="Column Definition" href="/docs/react/api/column-definition">
+    Configure individual columns
+  </Card>
+  <Card title="Data Sources" href="/docs/react/api/data-sources">
+    Client-side and server-side data handling
+  </Card>
+  <Card title="Events" href="/docs/react/api/events">
+    Grid instructions and events
+  </Card>
+</Cards>
+
+## Exports
+
+The `gp-grid-react` package exports the following:
+
+```tsx
+// Component
+import { Grid } from "gp-grid-react";
+
+// Types
+import type {
+  GridProps,
+  ColumnDefinition,
+  CellDataType,
+  CellValue,
+  CellPosition,
+  CellRange,
+  SortDirection,
+  SortModel,
+  FilterModel,
+  DataSource,
+  DataSourceRequest,
+  DataSourceResponse,
+  MutableDataSource,
+  CellRendererParams,
+  EditRendererParams,
+  HeaderRendererParams,
+  ReactCellRenderer,
+  ReactEditRenderer,
+  ReactHeaderRenderer,
+  GridInstruction,
+} from "gp-grid-react";
+
+// Data Source Factories
+import {
+  createClientDataSource,
+  createDataSourceFromArray,
+  createMutableClientDataSource,
+  createServerDataSource,
+} from "gp-grid-react";
+```
