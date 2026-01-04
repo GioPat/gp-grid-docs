@@ -2,11 +2,48 @@ import Link from "next/link";
 import { GridDemo } from "@/components/GridDemo";
 import { RotatingText } from "@/components/RotatingText";
 import { FeatureCard } from "@/components/FeatureCard";
+import { siteConfig } from "@/lib/metadata";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "gp-grid - The Fastest React & Vue Data Grid",
+  description: siteConfig.description,
+  openGraph: {
+    title: "gp-grid - The Fastest React & Vue Data Grid",
+    description: siteConfig.description,
+    type: "website",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: siteConfig.name,
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Any",
+  description: siteConfig.description,
+  url: siteConfig.url,
+  author: {
+    "@type": "Person",
+    name: siteConfig.author,
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  programmingLanguage: ["TypeScript", "JavaScript"],
+};
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col flex-1">
-      {/* Hero Section */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="flex flex-col flex-1">
+        {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center px-4 py-16 md:py-24">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
           The Fastest{" "}
@@ -97,6 +134,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }
