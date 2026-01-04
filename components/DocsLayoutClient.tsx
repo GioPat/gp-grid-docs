@@ -9,6 +9,7 @@ import {
   getFrameworkFromPath,
 } from "@/lib/framework-context";
 import { filterTreeByFramework } from "@/lib/filter-tree";
+import { FrameworkSwitcher } from "@/components/FrameworkSwitcher";
 import type { ReactNode } from "react";
 
 interface DocsLayoutClientProps {
@@ -28,7 +29,11 @@ export function DocsLayoutClient({
 
   return (
     <FrameworkProvider initialFramework={framework}>
-      <DocsLayout tree={filteredTree} {...baseOptions}>
+      <DocsLayout
+        tree={filteredTree}
+        {...baseOptions}
+        sidebar={{ banner: <FrameworkSwitcher /> }}
+      >
         {children}
       </DocsLayout>
     </FrameworkProvider>
