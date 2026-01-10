@@ -67,7 +67,7 @@ const dataSource = createClientDataSource(data, {
 
 ## Mutable Data Source
 
-For CRUD operations, use `createMutableClientDataSource`:
+For CRUD operations and real-time data updates, use `createMutableClientDataSource`. This data source is backed by a robust **transaction system** that enables efficient batching and optimistic updates.
 
 ```tsx
 import { createMutableClientDataSource } from "gp-grid-react";
@@ -93,6 +93,56 @@ dataSource.updateRow(3, { name: "Maria", email: "maria@example.com" });
 await dataSource.flushTransactions();
 ```
 
+### Transaction System
+
+The mutable data source uses an internal transaction system that provides several key benefits:
+
+**Automatic Batching** - Multiple operations within the debounce window are combined into a single transaction, minimizing re-renders and improving performance.
+
+**Optimistic Processing** - Changes are queued and processed asynchronously, allowing the UI to remain responsive during bulk operations.
+
+**Transaction Callbacks** - Track when transactions are processed:
+
+```tsx
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,
+  debounceMs: 50,
+  onTransactionProcessed: (result) => {
+    console.log(`Added: ${result.added}, Removed: ${result.removed}`);
+    // Update external state, analytics, etc.
+  },
+});
+```
+
+**Flush Control** - Force immediate processing when needed:
+
+```tsx
+// Wait for all pending transactions
+await dataSource.flushTransactions();
+
+// Check if there are pending changes
+if (dataSource.hasPendingTransactions()) {
+  // Handle pending state
+}
+```
+
+### Options
+
+```tsx
+interface MutableClientDataSourceOptions<TData> {
+  getRowId: (row: TData) => RowId;     // Required: unique ID accessor
+  debounceMs?: number;                  // Batch window (default: 50)
+  getFieldValue?: (row: TData, field: string) => CellValue;
+  onTransactionProcessed?: (result: TransactionResult) => void;
+}
+
+interface TransactionResult {
+  added: number;    // Count of rows added
+  removed: number;  // Count of rows removed
+  updated: number;  // Count of rows updated
+}
+```
+
 ### MutableDataSource Interface
 
 ```tsx
@@ -109,6 +159,17 @@ interface MutableDataSource<TData> extends DataSource<TData> {
   subscribe(listener: DataChangeListener): () => void;
 }
 ```
+
+### Use Cases
+
+The mutable data source is ideal for:
+
+- **Real-time dashboards** - Live data feeds with frequent updates
+- **Streaming data** - WebSocket or SSE data streams
+- **User editing** - Forms and inline editing with immediate feedback
+- **Bulk operations** - Import, batch updates, mass delete
+
+See the [Live Data example](/docs/react/examples/live-data) for a complete implementation.
 
 ## Server Data Source
 

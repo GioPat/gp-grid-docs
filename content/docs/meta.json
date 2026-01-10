@@ -1,4 +1,4 @@
 {
   "title": "Documentation",
-  "pages": ["index", "why", "react", "vue"]
+  "pages": ["index", "why", "benchmarks", "react", "vue"]
 }

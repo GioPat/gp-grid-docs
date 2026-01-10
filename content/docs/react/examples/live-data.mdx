@@ -1,0 +1,307 @@
+---
+title: Live Data
+description: Real-time data mutations with streaming updates
+---
+
+# Live Data
+
+This example demonstrates real-time data mutations using `createMutableClientDataSource`, showcasing the transaction system's ability to handle high-frequency updates efficiently.
+
+## Interactive Demo
+
+Try the live demo below. Click **Start Stream** to see real-time data insertion, or use the other controls to add/remove rows.
+
+<LiveDataDemo />
+
+## Overview
+
+The demo simulates a live stock ticker that:
+
+- Streams new data at configurable intervals
+- Supports batch insertions
+- Handles row removal operations
+- Tracks row count in real-time via transaction callbacks
+- Uses a custom cell renderer to colorize positive/negative changes
+
+## Full Example
+
+```tsx
+import { useState, useMemo, useCallback, useRef } from "react";
+import {
+  Grid,
+  createMutableClientDataSource,
+  type ColumnDefinition,
+} from "gp-grid-react";
+
+interface StockTick {
+  id: number;
+  symbol: string;
+  price: number;
+  change: number;
+  volume: number;
+  timestamp: string;
+}
+
+const symbols = [
+  "AAPL", "GOOGL", "MSFT", "AMZN", "META", "TSLA", "NVDA", "AMD",
+];
+
+function getRandomPrice(): number {
+  return Math.round((Math.random() * 500 + 50) * 100) / 100;
+}
+
+function getRandomChange(): number {
+  return Math.round((Math.random() * 10 - 5) * 100) / 100;
+}
+
+function getRandomVolume(): number {
+  return Math.floor(Math.random() * 1000000) + 10000;
+}
+
+let nextId = 1;
+
+function generateTick(): StockTick {
+  return {
+    id: nextId++,
+    symbol: symbols[Math.floor(Math.random() * symbols.length)],
+    price: getRandomPrice(),
+    change: getRandomChange(),
+    volume: getRandomVolume(),
+    timestamp: new Date().toISOString().slice(11, 23),
+  };
+}
+
+function generateInitialData(count: number): StockTick[] {
+  return Array.from({ length: count }, () => generateTick());
+}
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "symbol", cellDataType: "text", width: 100, headerName: "Symbol" },
+  { field: "price", cellDataType: "number", width: 120, headerName: "Price" },
+  { field: "change", cellDataType: "number", width: 100, headerName: "Change" },
+  { field: "volume", cellDataType: "number", width: 120, headerName: "Volume" },
+  { field: "timestamp", cellDataType: "text", width: 140, headerName: "Time" },
+];
+
+export function LiveDataDemo() {
+  const [rowCount, setRowCount] = useState(10);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamInterval, setStreamInterval] = useState(100);
+  const [batchSize, setBatchSize] = useState(10);
+  const streamingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Create mutable data source with transaction tracking
+  const dataSource = useMemo(() => {
+    return createMutableClientDataSource<StockTick>(
+      generateInitialData(10),
+      {
+        getRowId: (row) => row.id,
+        debounceMs: 50,
+        onTransactionProcessed: (result) => {
+          setRowCount((prev) => prev + result.added - result.removed);
+        },
+      }
+    );
+  }, []);
+
+  // Add a single row
+  const handleAddRow = useCallback(() => {
+    dataSource.addRows([generateTick()]);
+  }, [dataSource]);
+
+  // Add multiple rows at once
+  const handleAddBatch = useCallback(() => {
+    const batch = Array.from({ length: batchSize }, () => generateTick());
+    dataSource.addRows(batch);
+  }, [dataSource, batchSize]);
+
+  // Remove the first row
+  const handleRemoveFirst = useCallback(async () => {
+    await dataSource.flushTransactions();
+    const count = dataSource.getTotalRowCount();
+    if (count > 0) {
+      const firstId = 1;
+      dataSource.removeRows([firstId]);
+    }
+  }, [dataSource]);
+
+  // Clear all rows
+  const handleClearAll = useCallback(async () => {
+    await dataSource.flushTransactions();
+    const count = dataSource.getTotalRowCount();
+    const ids = Array.from({ length: count }, (_, i) => i + 1);
+    dataSource.removeRows(ids);
+  }, [dataSource]);
+
+  // Toggle streaming mode
+  const toggleStreaming = useCallback(() => {
+    if (isStreaming) {
+      if (streamingRef.current) {
+        clearInterval(streamingRef.current);
+        streamingRef.current = null;
+      }
+      setIsStreaming(false);
+    } else {
+      streamingRef.current = setInterval(() => {
+        dataSource.addRows([generateTick()]);
+      }, streamInterval);
+      setIsStreaming(true);
+    }
+  }, [isStreaming, streamInterval, dataSource]);
+
+  return (
+    <div>
+      <div style={{ marginBottom: "16px", display: "flex", gap: "8px" }}>
+        <button onClick={handleAddRow}>Add Row</button>
+        <button onClick={handleAddBatch}>Add {batchSize} Rows</button>
+        <button onClick={toggleStreaming}>
+          {isStreaming ? "Stop" : "Start"} Stream
+        </button>
+        <button onClick={handleRemoveFirst}>Remove First</button>
+        <button onClick={handleClearAll}>Clear All</button>
+      </div>
+
+      <div style={{ marginBottom: "16px" }}>
+        <strong>Rows:</strong> {rowCount.toLocaleString()} |{" "}
+        <strong>Debounce:</strong> 50ms |{" "}
+        <strong>Stream:</strong> {isStreaming ? "Active" : "Inactive"}
+      </div>
+
+      <div style={{ width: "100%", height: "400px" }}>
+        <Grid<StockTick>
+          columns={columns}
+          dataSource={dataSource}
+          rowHeight={36}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## Key Concepts
+
+### Custom Cell Renderer
+
+The "Change" column uses a custom renderer to display positive values in green and negative values in red:
+
+```tsx
+import { type CellRendererParams } from "gp-grid-react";
+
+const ChangeRenderer = (params: CellRendererParams) => {
+  const value = params.value as number;
+  const isPositive = value >= 0;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        height: "100%",
+        padding: "0 8px",
+        color: isPositive ? "#22c55e" : "#ef4444",
+      }}
+    >
+      {isPositive ? "+" : ""}
+      {value.toFixed(2)}
+    </div>
+  );
+};
+
+// Reference the renderer in the column definition
+const columns: ColumnDefinition[] = [
+  // ...other columns
+  {
+    field: "change",
+    cellDataType: "number",
+    width: 100,
+    headerName: "Change",
+    cellRenderer: "change",  // Key to reference
+  },
+];
+
+// Pass the renderer to the Grid
+<Grid
+  columns={columns}
+  dataSource={dataSource}
+  cellRenderers={{ change: ChangeRenderer }}
+/>
+```
+
+### Transaction Callbacks
+
+The `onTransactionProcessed` callback fires after each batch of operations is processed:
+
+```tsx
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,
+  debounceMs: 50,
+  onTransactionProcessed: (result) => {
+    // result.added - number of rows added
+    // result.removed - number of rows removed
+    // result.updated - number of rows updated
+    updateRowCount(result);
+  },
+});
+```
+
+### Debouncing for Performance
+
+The `debounceMs` option batches rapid operations:
+
+```tsx
+// With debounceMs: 50, these three calls become one transaction
+dataSource.addRows([tick1]);
+dataSource.addRows([tick2]);
+dataSource.addRows([tick3]);
+// Grid updates once after 50ms with all 3 rows
+```
+
+### Streaming Data
+
+For continuous data streams, use `setInterval` with `addRows`:
+
+```tsx
+const intervalId = setInterval(() => {
+  dataSource.addRows([generateNewData()]);
+}, 100); // Add new row every 100ms
+
+// Cleanup
+clearInterval(intervalId);
+```
+
+### Flushing Transactions
+
+Before operations that depend on current state, flush pending transactions:
+
+```tsx
+async function removeAllRows() {
+  // Ensure all pending adds are processed first
+  await dataSource.flushTransactions();
+
+  const count = dataSource.getTotalRowCount();
+  const ids = getAllRowIds();
+  dataSource.removeRows(ids);
+}
+```
+
+## Performance Tips
+
+1. **Adjust debounce for your use case** - Lower values (10-50ms) for real-time feel, higher values (100-500ms) for better batching.
+
+2. **Use batch operations** - `addRows([row1, row2, row3])` is more efficient than three separate `addRows` calls.
+
+3. **Leverage transaction callbacks** - Update derived state in `onTransactionProcessed` rather than polling.
+
+4. **Clean up intervals** - Always clear streaming intervals when components unmount:
+
+```tsx
+useEffect(() => {
+  return () => {
+    if (streamingRef.current) {
+      clearInterval(streamingRef.current);
+    }
+  };
+}, []);
+```

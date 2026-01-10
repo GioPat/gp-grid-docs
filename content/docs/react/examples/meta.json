@@ -6,6 +6,7 @@
     "filtering",
     "selection",
     "editing",
-    "custom-renderers"
+    "custom-renderers",
+    "live-data"
   ]
 }

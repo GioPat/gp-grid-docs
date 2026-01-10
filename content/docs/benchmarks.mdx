@@ -1,0 +1,182 @@
+---
+title: Benchmarks
+description: How does gp-grid performs compared to the available and well known grids
+---
+
+# gp-grid Benchmark Results
+
+**Date:** 2026-01-10T15:34:41.977Z
+
+**Platform:** linux
+
+**Node:** v24.11.1
+
+---
+
+The reference code of this benchmark can be found at: https://github.com/GioPat/gp-grid/tree/master/benchmarks
+
+## Scroll Performance
+
+| Metric | Higher/Lower is Better |
+|--------|------------------------|
+| Avg FPS | ⬆️ Higher is better |
+| Min FPS | ⬆️ Higher is better |
+| Frame Drops | ⬇️ Lower is better |
+| P95 FPS | ⬆️ Higher is better |
+
+### 10K Rows
+
+| Grid | Avg FPS ⬆️ | Min FPS ⬆️ | Frame Drops ⬇️ | P95 FPS ⬆️ |
+|------|------------|------------|----------------|------------|
+| **ag-grid** | 87.08265322258761 | 58.479532163623254 | 0 | 78.37438790032886 |
+| **gp-grid** | 87.00244495960315 | 56.81818181637786 | 0 | 78.30220046364283 |
+| **handsontable** | 285.7 | 60 | 0 | 60 |
+| **tanstack-table** | 80.05803776116485 | 57.47126436658565 | 0 | 72.05223398504837 |
+
+### 100K Rows
+
+| Grid | Avg FPS ⬆️ | Min FPS ⬆️ | Frame Drops ⬇️ | P95 FPS ⬆️ |
+|------|------------|------------|----------------|------------|
+| **ag-grid** | 87.02196708852313 | 58.13953488368158 | 0 | 78.31977037967081 |
+| **gp-grid** | 86.92610384301446 | 57.80346820560307 | 0 | 78.23349345871301 |
+| **handsontable** | 333.1 | 60 | 0 | 60 |
+| **tanstack-table** | 73.51809587801158 | 57.142857142857146 | 0 | 66.16628629021042 |
+
+### 1M Rows
+
+| Grid | Avg FPS ⬆️ | Min FPS ⬆️ | Frame Drops ⬇️ | P95 FPS ⬆️ |
+|------|------------|------------|----------------|------------|
+| **ag-grid** | 60.12655564823211 | 58.8235294117647 | 0 | 54.1139000834089 |
+| **gp-grid** | 87.0382574130313 | 57.47126436658565 | 0 | 78.33443167172817 |
+| **handsontable** | 70.48941461287924 | 56.497175140648395 | 0 | 63.44047315159132 |
+| **tanstack-table** | 87.05713617634078 | 57.80346820560307 | 0 | 78.3514225587067 |
+
+## Initial Render
+
+| Metric | Higher/Lower is Better |
+|--------|------------------------|
+| First Paint | ⬇️ Lower is better |
+| Full Render | ⬇️ Lower is better |
+| LCP | ⬇️ Lower is better |
+| TBT | ⬇️ Lower is better |
+
+### 10K Rows
+
+| Grid | First Paint ⬇️ | Full Render ⬇️ | LCP ⬇️ | TBT ⬇️ |
+|------|----------------|----------------|--------|--------|
+| **ag-grid** | 512ms | 369ms | 512ms | 165ms |
+| **gp-grid** | 200ms | 131ms | 272ms | 0ms |
+| **handsontable** | 400ms | 300ms | 400ms | 42ms |
+| **tanstack-table** | 184ms | 343ms | 356ms | 69ms |
+
+### 100K Rows
+
+| Grid | First Paint ⬇️ | Full Render ⬇️ | LCP ⬇️ | TBT ⬇️ |
+|------|----------------|----------------|--------|--------|
+| **ag-grid** | 664ms | 600ms | 664ms | 371ms |
+| **gp-grid** | 88ms | 268ms | 308ms | 112ms |
+| **handsontable** | 192ms | 452ms | 192ms | 175ms |
+| **tanstack-table** | 76ms | 678ms | 612ms | 410ms |
+
+### 1M Rows
+
+| Grid | First Paint ⬇️ | Full Render ⬇️ | LCP ⬇️ | TBT ⬇️ |
+|------|----------------|----------------|--------|--------|
+| **ag-grid** | 3220ms | 3161ms | 3220ms | 2928ms |
+| **gp-grid** | 92ms | 1698ms | 1740ms | 1501ms |
+| **handsontable** | 188ms | 1897ms | 188ms | 1633ms |
+| **tanstack-table** | 76ms | 5111ms | 5040ms | 4839ms |
+
+## Sort/Filter Performance
+
+| Metric | Higher/Lower is Better |
+|--------|------------------------|
+| All timing metrics | ⬇️ Lower is better |
+
+### 10K Rows
+
+| Grid | Sort Asc ⬇️ | Sort Desc ⬇️ | Text Filter ⬇️ | Number Filter ⬇️ |
+|------|-------------|--------------|----------------|------------------|
+| **ag-grid** | 250ms | 277ms | 119ms | 188ms |
+| **gp-grid** | 135ms | 101ms | 102ms | 74ms |
+| **handsontable** | 109ms | 90ms | 113ms | 92ms |
+| **tanstack-table** | 142ms | 134ms | 93ms | 74ms |
+
+### 100K Rows
+
+| Grid | Sort Asc ⬇️ | Sort Desc ⬇️ | Text Filter ⬇️ | Number Filter ⬇️ |
+|------|-------------|--------------|----------------|------------------|
+| **ag-grid** | 449ms | 318ms | 159ms | 168ms |
+| **gp-grid** | 217ms | 201ms | 85ms | 77ms |
+| **handsontable** | 163ms | 162ms | 352ms | 209ms |
+| **tanstack-table** | 341ms | 332ms | 142ms | 72ms |
+
+### 1M Rows
+
+| Grid | Sort Asc ⬇️ | Sort Desc ⬇️ | Text Filter ⬇️ | Number Filter ⬇️ |
+|------|-------------|--------------|----------------|------------------|
+| **ag-grid** | 1940ms | 1829ms | 384ms | 351ms |
+| **gp-grid** | 816ms | 762ms | 164ms | 176ms |
+| **handsontable** | 1222ms | 1120ms | 3024ms | 1529ms |
+| **tanstack-table** | 2759ms | 3915ms | 484ms | 192ms |
+
+## Memory Usage
+
+| Metric | Higher/Lower is Better |
+|--------|------------------------|
+| After Load | ⬇️ Lower is better |
+| Peak | ⬇️ Lower is better |
+| Growth Rate | ⬇️ Lower is better |
+| Retained | ⬇️ Lower is better |
+
+### 10K Rows
+
+| Grid | After Load ⬇️ | Peak ⬇️ | Growth (MB/1K) ⬇️ | Retained ⬇️ |
+|------|---------------|---------|-------------------|-------------|
+| **ag-grid** | 18.37MB | 99.82MB | 1.241 | 2.57MB |
+| **gp-grid** | 7.44MB | 38.75MB | 0.418 | 4.97MB |
+| **handsontable** | 9.3MB | 14.91MB | 0.409 | 2.02MB |
+| **tanstack-table** | 35.44MB | 143.43MB | 3.314 | 1.8MB |
+
+### 100K Rows
+
+| Grid | After Load ⬇️ | Peak ⬇️ | Growth (MB/1K) ⬇️ | Retained ⬇️ |
+|------|---------------|---------|-------------------|-------------|
+| **ag-grid** | 57.77MB | 201.16MB | 0.518 | 2.76MB |
+| **gp-grid** | 30.35MB | 69.86MB | 0.271 | 27.93MB |
+| **handsontable** | 37.41MB | 43.62MB | 0.322 | 2.28MB |
+| **tanstack-table** | 295.41MB | 397.84MB | 2.931 | 289.67MB |
+
+### 1M Rows
+
+| Grid | After Load ⬇️ | Peak ⬇️ | Growth (MB/1K) ⬇️ | Retained ⬇️ |
+|------|---------------|---------|-------------------|-------------|
+| **ag-grid** | 451.81MB | 642.09MB | 0.446 | 2.81MB |
+| **gp-grid** | 257MB | 316.08MB | 0.254 | 254.47MB |
+| **handsontable** | 316.21MB | 324.41MB | 0.311 | 2.29MB |
+| **tanstack-table** | 2896.87MB | 2996.4MB | 2.895 | 1.81MB |
+
+---
+
+## Legend
+
+- ⬆️ **Higher is better** - For these metrics, larger values indicate better performance
+- ⬇️ **Lower is better** - For these metrics, smaller values indicate better performance
+
+### Metrics Explained
+
+| Metric | Description |
+|--------|-------------|
+| **Avg FPS** | Average frames per second during scroll |
+| **Min FPS** | Minimum FPS observed (worst case) |
+| **Frame Drops** | Number of frames that took >25ms |
+| **P95 FPS** | 95th percentile FPS (excludes outliers) |
+| **First Paint** | Time to first contentful paint |
+| **Full Render** | Time until grid is fully interactive |
+| **LCP** | Largest Contentful Paint |
+| **TBT** | Total Blocking Time |
+| **After Load** | Heap size after data is loaded |
+| **Peak** | Maximum heap size during operation |
+| **Growth Rate** | Memory increase per 1000 rows |
+| **Retained** | Memory not released after clearing data |
+
