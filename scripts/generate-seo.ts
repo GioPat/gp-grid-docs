@@ -13,10 +13,10 @@ function getBaseUrl(): string {
     return process.env.SITE_URL.replace(/\/$/, "");
   }
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    return `https://www.${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
   }
   if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
+    return `https://www.${process.env.VERCEL_URL}`;
   }
   return "http://localhost:3000";
 }
