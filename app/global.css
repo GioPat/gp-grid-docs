@@ -1,3 +1,12 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/purple.css";
 @import "fumadocs-ui/css/preset.css";
+
+/* Highlight gp-grid rows in benchmark tables */
+.gp-grid-highlight {
+  background-color: rgba(147, 51, 234, 0.15);
+}
+
+.dark .gp-grid-highlight {
+  background-color: rgba(168, 85, 247, 0.2);
+}

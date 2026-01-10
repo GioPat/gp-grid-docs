@@ -26,30 +26,135 @@ The reference code of this benchmark can be found at: https://github.com/GioPat/
 
 ### 10K Rows
 
-| Grid | Avg FPS ⬆️ | Min FPS ⬆️ | Frame Drops ⬇️ | P95 FPS ⬆️ |
-|------|------------|------------|----------------|------------|
-| **ag-grid** | 87.08265322258761 | 58.479532163623254 | 0 | 78.37438790032886 |
-| **gp-grid** | 87.00244495960315 | 56.81818181637786 | 0 | 78.30220046364283 |
-| **handsontable** | 285.7 | 60 | 0 | 60 |
-| **tanstack-table** | 80.05803776116485 | 57.47126436658565 | 0 | 72.05223398504837 |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>Avg FPS ⬆️</th>
+      <th>Min FPS ⬆️</th>
+      <th>Frame Drops ⬇️</th>
+      <th>P95 FPS ⬆️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>87.08</td>
+      <td>58.48</td>
+      <td>0</td>
+      <td>78.37</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>87.00</td>
+      <td>56.82</td>
+      <td>0</td>
+      <td>78.30</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>285.7</td>
+      <td>60</td>
+      <td>0</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>80.06</td>
+      <td>57.47</td>
+      <td>0</td>
+      <td>72.05</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 100K Rows
 
-| Grid | Avg FPS ⬆️ | Min FPS ⬆️ | Frame Drops ⬇️ | P95 FPS ⬆️ |
-|------|------------|------------|----------------|------------|
-| **ag-grid** | 87.02196708852313 | 58.13953488368158 | 0 | 78.31977037967081 |
-| **gp-grid** | 86.92610384301446 | 57.80346820560307 | 0 | 78.23349345871301 |
-| **handsontable** | 333.1 | 60 | 0 | 60 |
-| **tanstack-table** | 73.51809587801158 | 57.142857142857146 | 0 | 66.16628629021042 |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>Avg FPS ⬆️</th>
+      <th>Min FPS ⬆️</th>
+      <th>Frame Drops ⬇️</th>
+      <th>P95 FPS ⬆️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>87.02</td>
+      <td>58.14</td>
+      <td>0</td>
+      <td>78.32</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>86.93</td>
+      <td>57.80</td>
+      <td>0</td>
+      <td>78.23</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>333.1</td>
+      <td>60</td>
+      <td>0</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>73.52</td>
+      <td>57.14</td>
+      <td>0</td>
+      <td>66.17</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 1M Rows
 
-| Grid | Avg FPS ⬆️ | Min FPS ⬆️ | Frame Drops ⬇️ | P95 FPS ⬆️ |
-|------|------------|------------|----------------|------------|
-| **ag-grid** | 60.12655564823211 | 58.8235294117647 | 0 | 54.1139000834089 |
-| **gp-grid** | 87.0382574130313 | 57.47126436658565 | 0 | 78.33443167172817 |
-| **handsontable** | 70.48941461287924 | 56.497175140648395 | 0 | 63.44047315159132 |
-| **tanstack-table** | 87.05713617634078 | 57.80346820560307 | 0 | 78.3514225587067 |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>Avg FPS ⬆️</th>
+      <th>Min FPS ⬆️</th>
+      <th>Frame Drops ⬇️</th>
+      <th>P95 FPS ⬆️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>60.13</td>
+      <td>58.82</td>
+      <td>0</td>
+      <td>54.11</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>87.04</td>
+      <td>57.47</td>
+      <td>0</td>
+      <td>78.33</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>70.49</td>
+      <td>56.50</td>
+      <td>0</td>
+      <td>63.44</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>87.06</td>
+      <td>57.80</td>
+      <td>0</td>
+      <td>78.35</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Initial Render
 
@@ -62,30 +167,135 @@ The reference code of this benchmark can be found at: https://github.com/GioPat/
 
 ### 10K Rows
 
-| Grid | First Paint ⬇️ | Full Render ⬇️ | LCP ⬇️ | TBT ⬇️ |
-|------|----------------|----------------|--------|--------|
-| **ag-grid** | 512ms | 369ms | 512ms | 165ms |
-| **gp-grid** | 200ms | 131ms | 272ms | 0ms |
-| **handsontable** | 400ms | 300ms | 400ms | 42ms |
-| **tanstack-table** | 184ms | 343ms | 356ms | 69ms |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>First Paint ⬇️</th>
+      <th>Full Render ⬇️</th>
+      <th>LCP ⬇️</th>
+      <th>TBT ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>512ms</td>
+      <td>369ms</td>
+      <td>512ms</td>
+      <td>165ms</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>200ms</td>
+      <td>131ms</td>
+      <td>272ms</td>
+      <td>0ms</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>400ms</td>
+      <td>300ms</td>
+      <td>400ms</td>
+      <td>42ms</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>184ms</td>
+      <td>343ms</td>
+      <td>356ms</td>
+      <td>69ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 100K Rows
 
-| Grid | First Paint ⬇️ | Full Render ⬇️ | LCP ⬇️ | TBT ⬇️ |
-|------|----------------|----------------|--------|--------|
-| **ag-grid** | 664ms | 600ms | 664ms | 371ms |
-| **gp-grid** | 88ms | 268ms | 308ms | 112ms |
-| **handsontable** | 192ms | 452ms | 192ms | 175ms |
-| **tanstack-table** | 76ms | 678ms | 612ms | 410ms |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>First Paint ⬇️</th>
+      <th>Full Render ⬇️</th>
+      <th>LCP ⬇️</th>
+      <th>TBT ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>664ms</td>
+      <td>600ms</td>
+      <td>664ms</td>
+      <td>371ms</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>88ms</td>
+      <td>268ms</td>
+      <td>308ms</td>
+      <td>112ms</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>192ms</td>
+      <td>452ms</td>
+      <td>192ms</td>
+      <td>175ms</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>76ms</td>
+      <td>678ms</td>
+      <td>612ms</td>
+      <td>410ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 1M Rows
 
-| Grid | First Paint ⬇️ | Full Render ⬇️ | LCP ⬇️ | TBT ⬇️ |
-|------|----------------|----------------|--------|--------|
-| **ag-grid** | 3220ms | 3161ms | 3220ms | 2928ms |
-| **gp-grid** | 92ms | 1698ms | 1740ms | 1501ms |
-| **handsontable** | 188ms | 1897ms | 188ms | 1633ms |
-| **tanstack-table** | 76ms | 5111ms | 5040ms | 4839ms |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>First Paint ⬇️</th>
+      <th>Full Render ⬇️</th>
+      <th>LCP ⬇️</th>
+      <th>TBT ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>3220ms</td>
+      <td>3161ms</td>
+      <td>3220ms</td>
+      <td>2928ms</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>92ms</td>
+      <td>1698ms</td>
+      <td>1740ms</td>
+      <td>1501ms</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>188ms</td>
+      <td>1897ms</td>
+      <td>188ms</td>
+      <td>1633ms</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>76ms</td>
+      <td>5111ms</td>
+      <td>5040ms</td>
+      <td>4839ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Sort/Filter Performance
 
@@ -95,30 +305,135 @@ The reference code of this benchmark can be found at: https://github.com/GioPat/
 
 ### 10K Rows
 
-| Grid | Sort Asc ⬇️ | Sort Desc ⬇️ | Text Filter ⬇️ | Number Filter ⬇️ |
-|------|-------------|--------------|----------------|------------------|
-| **ag-grid** | 250ms | 277ms | 119ms | 188ms |
-| **gp-grid** | 135ms | 101ms | 102ms | 74ms |
-| **handsontable** | 109ms | 90ms | 113ms | 92ms |
-| **tanstack-table** | 142ms | 134ms | 93ms | 74ms |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>Sort Asc ⬇️</th>
+      <th>Sort Desc ⬇️</th>
+      <th>Text Filter ⬇️</th>
+      <th>Number Filter ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>250ms</td>
+      <td>277ms</td>
+      <td>119ms</td>
+      <td>188ms</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>135ms</td>
+      <td>101ms</td>
+      <td>102ms</td>
+      <td>74ms</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>109ms</td>
+      <td>90ms</td>
+      <td>113ms</td>
+      <td>92ms</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>142ms</td>
+      <td>134ms</td>
+      <td>93ms</td>
+      <td>74ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 100K Rows
 
-| Grid | Sort Asc ⬇️ | Sort Desc ⬇️ | Text Filter ⬇️ | Number Filter ⬇️ |
-|------|-------------|--------------|----------------|------------------|
-| **ag-grid** | 449ms | 318ms | 159ms | 168ms |
-| **gp-grid** | 217ms | 201ms | 85ms | 77ms |
-| **handsontable** | 163ms | 162ms | 352ms | 209ms |
-| **tanstack-table** | 341ms | 332ms | 142ms | 72ms |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>Sort Asc ⬇️</th>
+      <th>Sort Desc ⬇️</th>
+      <th>Text Filter ⬇️</th>
+      <th>Number Filter ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>449ms</td>
+      <td>318ms</td>
+      <td>159ms</td>
+      <td>168ms</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>217ms</td>
+      <td>201ms</td>
+      <td>85ms</td>
+      <td>77ms</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>163ms</td>
+      <td>162ms</td>
+      <td>352ms</td>
+      <td>209ms</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>341ms</td>
+      <td>332ms</td>
+      <td>142ms</td>
+      <td>72ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 1M Rows
 
-| Grid | Sort Asc ⬇️ | Sort Desc ⬇️ | Text Filter ⬇️ | Number Filter ⬇️ |
-|------|-------------|--------------|----------------|------------------|
-| **ag-grid** | 1940ms | 1829ms | 384ms | 351ms |
-| **gp-grid** | 816ms | 762ms | 164ms | 176ms |
-| **handsontable** | 1222ms | 1120ms | 3024ms | 1529ms |
-| **tanstack-table** | 2759ms | 3915ms | 484ms | 192ms |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>Sort Asc ⬇️</th>
+      <th>Sort Desc ⬇️</th>
+      <th>Text Filter ⬇️</th>
+      <th>Number Filter ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>1940ms</td>
+      <td>1829ms</td>
+      <td>384ms</td>
+      <td>351ms</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>816ms</td>
+      <td>762ms</td>
+      <td>164ms</td>
+      <td>176ms</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>1222ms</td>
+      <td>1120ms</td>
+      <td>3024ms</td>
+      <td>1529ms</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>2759ms</td>
+      <td>3915ms</td>
+      <td>484ms</td>
+      <td>192ms</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Memory Usage
 
@@ -131,30 +446,135 @@ The reference code of this benchmark can be found at: https://github.com/GioPat/
 
 ### 10K Rows
 
-| Grid | After Load ⬇️ | Peak ⬇️ | Growth (MB/1K) ⬇️ | Retained ⬇️ |
-|------|---------------|---------|-------------------|-------------|
-| **ag-grid** | 18.37MB | 99.82MB | 1.241 | 2.57MB |
-| **gp-grid** | 7.44MB | 38.75MB | 0.418 | 4.97MB |
-| **handsontable** | 9.3MB | 14.91MB | 0.409 | 2.02MB |
-| **tanstack-table** | 35.44MB | 143.43MB | 3.314 | 1.8MB |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>After Load ⬇️</th>
+      <th>Peak ⬇️</th>
+      <th>Growth (MB/1K) ⬇️</th>
+      <th>Retained ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>18.37MB</td>
+      <td>99.82MB</td>
+      <td>1.241</td>
+      <td>2.57MB</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>7.44MB</td>
+      <td>38.75MB</td>
+      <td>0.418</td>
+      <td>4.97MB</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>9.3MB</td>
+      <td>14.91MB</td>
+      <td>0.409</td>
+      <td>2.02MB</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>35.44MB</td>
+      <td>143.43MB</td>
+      <td>3.314</td>
+      <td>1.8MB</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 100K Rows
 
-| Grid | After Load ⬇️ | Peak ⬇️ | Growth (MB/1K) ⬇️ | Retained ⬇️ |
-|------|---------------|---------|-------------------|-------------|
-| **ag-grid** | 57.77MB | 201.16MB | 0.518 | 2.76MB |
-| **gp-grid** | 30.35MB | 69.86MB | 0.271 | 27.93MB |
-| **handsontable** | 37.41MB | 43.62MB | 0.322 | 2.28MB |
-| **tanstack-table** | 295.41MB | 397.84MB | 2.931 | 289.67MB |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>After Load ⬇️</th>
+      <th>Peak ⬇️</th>
+      <th>Growth (MB/1K) ⬇️</th>
+      <th>Retained ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>57.77MB</td>
+      <td>201.16MB</td>
+      <td>0.518</td>
+      <td>2.76MB</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>30.35MB</td>
+      <td>69.86MB</td>
+      <td>0.271</td>
+      <td>27.93MB</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>37.41MB</td>
+      <td>43.62MB</td>
+      <td>0.322</td>
+      <td>2.28MB</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>295.41MB</td>
+      <td>397.84MB</td>
+      <td>2.931</td>
+      <td>289.67MB</td>
+    </tr>
+  </tbody>
+</table>
 
 ### 1M Rows
 
-| Grid | After Load ⬇️ | Peak ⬇️ | Growth (MB/1K) ⬇️ | Retained ⬇️ |
-|------|---------------|---------|-------------------|-------------|
-| **ag-grid** | 451.81MB | 642.09MB | 0.446 | 2.81MB |
-| **gp-grid** | 257MB | 316.08MB | 0.254 | 254.47MB |
-| **handsontable** | 316.21MB | 324.41MB | 0.311 | 2.29MB |
-| **tanstack-table** | 2896.87MB | 2996.4MB | 2.895 | 1.81MB |
+<table>
+  <thead>
+    <tr>
+      <th>Grid</th>
+      <th>After Load ⬇️</th>
+      <th>Peak ⬇️</th>
+      <th>Growth (MB/1K) ⬇️</th>
+      <th>Retained ⬇️</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>**ag-grid**</td>
+      <td>451.81MB</td>
+      <td>642.09MB</td>
+      <td>0.446</td>
+      <td>2.81MB</td>
+    </tr>
+    <tr className="gp-grid-highlight">
+      <td>**gp-grid**</td>
+      <td>257MB</td>
+      <td>316.08MB</td>
+      <td>0.254</td>
+      <td>254.47MB</td>
+    </tr>
+    <tr>
+      <td>**handsontable**</td>
+      <td>316.21MB</td>
+      <td>324.41MB</td>
+      <td>0.311</td>
+      <td>2.29MB</td>
+    </tr>
+    <tr>
+      <td>**tanstack-table**</td>
+      <td>2896.87MB</td>
+      <td>2996.4MB</td>
+      <td>2.895</td>
+      <td>1.81MB</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -179,4 +599,3 @@ The reference code of this benchmark can be found at: https://github.com/GioPat/
 | **Peak** | Maximum heap size during operation |
 | **Growth Rate** | Memory increase per 1000 rows |
 | **Retained** | Memory not released after clearing data |
-
