@@ -71,10 +71,9 @@ export const FeatureCard = ({
 
   return (
     <div
-      className={`relative p-6 rounded-lg border bg-fd-background transition-colors duration-300 ${
+      className={`relative p-6 rounded-lg border bg-fd-background transition-colors duration-300 overflow-hidden ${
         isActive ? "border-fd-primary" : "border-fd-border"
       }`}
-      style={{ overflow: "hidden", clipPath: "inset(0 round 8px)" }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}
