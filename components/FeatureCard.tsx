@@ -48,18 +48,36 @@ export const FeatureCard = ({
   feature: Feature;
 }) => {
   const [animating, setAnimating] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleMouseEnter = () => {
     setAnimating(true);
-    // Reset after animation completes
+    setIsActive(true);
     setTimeout(() => setAnimating(false), 500);
+  };
+
+  const handleMouseLeave = () => {
+    setIsActive(false);
+  };
+
+  const handleTouchStart = () => {
+    setAnimating(true);
+    setIsActive(true);
+    setTimeout(() => {
+      setAnimating(false);
+      setIsActive(false);
+    }, 800);
   };
 
   return (
     <div
-      className="relative p-6 rounded-lg border border-fd-border bg-fd-background"
+      className={`relative p-6 rounded-lg border bg-fd-background transition-colors duration-300 ${
+        isActive ? "border-fd-primary" : "border-fd-border"
+      }`}
       style={{ overflow: "hidden", clipPath: "inset(0 round 8px)" }}
       onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
     >
       <div
         style={{
