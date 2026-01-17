@@ -7,6 +7,7 @@
     "selection",
     "editing",
     "custom-renderers",
-    "live-data"
+    "live-data",
+    "highlighting"
   ]
 }

@@ -9,7 +9,7 @@
         "fumadocs-core": "^16.4.3",
         "fumadocs-mdx": "^14.2.4",
         "fumadocs-ui": "16.4.3",
-        "gp-grid-react": "^0.5.3",
+        "gp-grid-react": "^0.7.1",
         "lucide-react": "^0.562.0",
         "next": "16.1.1",
         "react": "^19.2.3",
@@ -744,9 +744,9 @@
 
     "gopd": ["gopd@1.2.0", "", {}, "sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg=="],
 
-    "gp-grid-core": ["gp-grid-core@0.5.3", "", {}, "sha512-/IpizQNDY/gs/LhTNQwiTe9Q6xsJhbqSC/mJ+cJ28WMm8JOWpcIKHMtc09/GyUNbZcUIp6lvZ/KEMsbw4SvEjw=="],
+    "gp-grid-core": ["gp-grid-core@0.7.1", "", {}, "sha512-FnJIFN3R9AyLQqlVNUXPZixhm21YTxDuJ+5MtowU4QXLb5dSkw+72d6HdTAm7gvkmE+obXjE+cXEZwhlfHc62w=="],
 
-    "gp-grid-react": ["gp-grid-react@0.5.3", "", { "dependencies": { "gp-grid-core": "0.5.3" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.1.1" } }, "sha512-k64UPytyNRY8/EDepqH51i1qa/xBMWNuDiVkTKrUAU/B9GldZx3Q8Yz6ywwY83zIqlZ48HOrGFW6oxjnJjaAOQ=="],
+    "gp-grid-react": ["gp-grid-react@0.7.1", "", { "dependencies": { "gp-grid-core": "0.7.1" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.1.1" } }, "sha512-2LPuvQ6UAYE+8b7cp2ymkczDHIk2jHukCOJHbxZbbldD2C6J7ENhT+VvpfuPT9J236PDWr8PhaIxOar2FEc+6A=="],
 
     "graceful-fs": ["graceful-fs@4.2.11", "", {}, "sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ=="],
 

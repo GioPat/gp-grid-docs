@@ -130,6 +130,20 @@ export function GridDemo() {
           rowData={rowData}
           rowHeight={36}
           darkMode={isDark}
+          highlighting={{
+            computeRowClasses: (context) => {
+              if (context.rowIndex !== null && context.rowIndex % 2 === 1) {
+                return ["zebra-row"];
+              }
+              return [];
+            },
+            computeCellClasses: (context) => {
+              if (context.isHovered) {
+                return ["cell-hover"];
+              }
+              return [];
+            },
+          }}
         />
       </div>
     </div>

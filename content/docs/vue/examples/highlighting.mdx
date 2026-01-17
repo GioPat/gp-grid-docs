@@ -1,0 +1,273 @@
+---
+title: Highlighting
+description: Row, column, and cell highlighting with hover effects
+---
+
+# Highlighting
+
+This example demonstrates the v0.7.0 highlighting API using `computeRowClasses`, `computeColumnClasses`, and `computeCellClasses` to create dynamic hover effects.
+
+## Overview
+
+The highlighting API provides three callback functions that let you dynamically apply CSS classes to rows, columns, or cells based on various contexts including hover state.
+
+## Highlighting Modes
+
+### Row Hover
+
+Highlight the entire row when any cell in that row is hovered:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+import { Grid } from 'gp-grid-vue';
+
+const highlighting = {
+  computeRowClasses: (context) => {
+    if (context.isHovered) {
+      return ['row-highlight'];
+    }
+    return [];
+  },
+};
+</script>
+```
+
+### Column Highlight
+
+Highlight the entire column when any cell in that column is hovered:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+const highlighting = {
+  computeColumnClasses: (context) => {
+    if (context.isHovered) {
+      return ['column-highlight'];
+    }
+    return [];
+  },
+};
+</script>
+```
+
+### Crosshairs Effect
+
+Combine row and column highlighting for a crosshair effect:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+const highlighting = {
+  computeRowClasses: (context) =>
+    context.isHovered ? ['row-highlight'] : [],
+  computeColumnClasses: (context) =>
+    context.isHovered ? ['column-highlight'] : [],
+};
+</script>
+```
+
+### Cell Hover
+
+Highlight only the individual cell being hovered:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+const highlighting = {
+  computeCellClasses: (context) => {
+    if (context.isHovered) {
+      return ['cell-highlight'];
+    }
+    return [];
+  },
+};
+</script>
+```
+
+## API Reference
+
+### `highlighting` Prop
+
+The `highlighting` prop accepts an object with three optional callback functions:
+
+```ts
+interface HighlightingOptions<TData> {
+  computeRowClasses?: (context: HighlightContext<TData>) => string[];
+  computeColumnClasses?: (context: HighlightContext<TData>) => string[];
+  computeCellClasses?: (context: HighlightContext<TData>) => string[];
+}
+```
+
+### HighlightContext
+
+All three callbacks receive the same unified context type. The `rowIndex` and `colIndex` fields indicate the context type:
+
+- **Row context**: `rowIndex` is set, `colIndex` is null
+- **Column context**: `colIndex` is set, `rowIndex` is null
+- **Cell context**: both `rowIndex` and `colIndex` are set
+
+```ts
+interface HighlightContext<TData> {
+  /** Row index. Null for column-only context. */
+  rowIndex: number | null;
+  /** Column index. Null for row-only context. */
+  colIndex: number | null;
+  /** Column definition. Present for column and cell contexts. */
+  column?: HighlightColumnInfo;
+  /** Row data. Present for row and cell contexts. */
+  rowData?: TData;
+  /** Currently hovered cell position */
+  hoverPosition: CellPosition | null;
+  /** Currently active (focused) cell position */
+  activeCell: CellPosition | null;
+  /** Current selection range */
+  selectionRange: CellRange | null;
+  /** Whether this row/column/cell is hovered */
+  isHovered: boolean;
+  /** Whether this row/column contains the active cell */
+  isActive: boolean;
+  /** Whether this row/column/cell is in the selection range */
+  isSelected: boolean;
+}
+```
+
+## CSS Classes
+
+Add these CSS classes to your stylesheet for the highlighting effects:
+
+```css
+/* Row highlighting */
+.row-highlight {
+  background-color: rgba(147, 51, 234, 0.1);
+}
+.dark .row-highlight {
+  background-color: rgba(168, 85, 247, 0.15);
+}
+
+/* Column highlighting */
+.column-highlight {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+.dark .column-highlight {
+  background-color: rgba(96, 165, 250, 0.15);
+}
+
+/* Cell highlighting */
+.cell-highlight {
+  background-color: rgba(34, 197, 94, 0.2);
+}
+.dark .cell-highlight {
+  background-color: rgba(74, 222, 128, 0.25);
+}
+```
+
+## Zebra Striping Example
+
+You can use `computeRowClasses` for zebra striping without any hover logic:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+const highlighting = {
+  computeRowClasses: (context) => {
+    // rowIndex is always set for row callbacks
+    if (context.rowIndex !== null && context.rowIndex % 2 === 1) {
+      return ['zebra-row'];
+    }
+    return [];
+  },
+};
+</script>
+```
+
+```css
+.zebra-row {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.dark .zebra-row {
+  background-color: #1a1b1e;
+}
+```
+
+## Conditional Highlighting
+
+You can combine multiple conditions for more complex highlighting logic:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+const highlighting = {
+  computeRowClasses: (context) => {
+    if (context.rowIndex === null) return [];
+
+    const classes: string[] = [];
+
+    // Zebra striping
+    if (context.rowIndex % 2 === 1) {
+      classes.push('zebra-row');
+    }
+
+    // Hover effect
+    if (context.isHovered) {
+      classes.push('row-highlight');
+    }
+
+    // Selection styling
+    if (context.isSelected) {
+      classes.push('selected-row');
+    }
+
+    return classes;
+  },
+};
+</script>
+```
+
+## Performance Notes
+
+- Callback functions are called during render, so keep them lightweight
+- Return the same array reference when possible to avoid unnecessary re-renders
+- Consider memoizing complex class computations if performance is a concern

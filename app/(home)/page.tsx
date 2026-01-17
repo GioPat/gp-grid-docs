@@ -88,7 +88,7 @@ export default function HomePage() {
               See it in Action
             </h2>
             <p className="text-fd-muted-foreground text-center mb-8">
-              Scroll, filter and sort through 1.5 million rows with
+              Scroll, filter and sort through this sample of 1.5 million rows with
               buttery-smooth performance
             </p>
             <GridDemo />
