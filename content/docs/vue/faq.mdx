@@ -83,17 +83,31 @@ gp-grid requires browser APIs. Wrap it in `<ClientOnly>`:
 
 ## Styling
 
+### How do I enable dark mode?
+
+Use the `dark-mode` prop:
+
+```vue
+<template>
+  <Grid :dark-mode="isDark" ... />
+</template>
+```
+
+For integration with VueUse or Nuxt Color Mode, see the [Styling Guide](/docs/vue/guides/styling).
+
 ### How do I override styles in scoped CSS?
 
-Use `:deep()`:
+Use `:deep()` for scoped style overrides:
 
 ```vue
 <style scoped>
 :deep(.gp-grid-header) {
-  background: blue;
+  background-color: var(--primary);
 }
 </style>
 ```
+
+For complete styling options, see the [Styling Guide](/docs/vue/guides/styling).
 
 ## Performance
 

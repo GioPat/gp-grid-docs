@@ -67,6 +67,100 @@ Use `:deep()` for scoped style overrides:
 </style>
 ```
 
+## Dynamic Class Computation
+
+Use the `highlighting` prop to dynamically compute CSS classes for rows, columns, or cells based on data or interaction state.
+
+### highlighting Prop
+
+```ts
+interface HighlightingOptions<TData> {
+  computeRowClasses?: (context: HighlightContext<TData>) => string[];
+  computeColumnClasses?: (context: HighlightContext<TData>) => string[];
+  computeCellClasses?: (context: HighlightContext<TData>) => string[];
+}
+```
+
+### Row Classes
+
+Apply classes to entire rows based on row data or hover state:
+
+```vue
+<template>
+  <Grid
+    :columns="columns"
+    :row-data="rowData"
+    :highlighting="highlighting"
+  />
+</template>
+
+<script setup lang="ts">
+const highlighting = {
+  computeRowClasses: (context) => {
+    const classes: string[] = [];
+
+    // Zebra striping
+    if (context.rowIndex !== null && context.rowIndex % 2 === 1) {
+      classes.push('zebra-row');
+    }
+
+    // Hover effect
+    if (context.isHovered) {
+      classes.push('row-highlight');
+    }
+
+    return classes;
+  },
+};
+</script>
+```
+
+### Column Classes
+
+Apply classes to entire columns:
+
+```vue
+<script setup lang="ts">
+const highlighting = {
+  computeColumnClasses: (context) =>
+    context.isHovered ? ['column-highlight'] : [],
+};
+</script>
+```
+
+### Cell Classes
+
+Apply classes to individual cells:
+
+```vue
+<script setup lang="ts">
+const highlighting = {
+  computeCellClasses: (context) => {
+    if (context.isHovered) {
+      return ['cell-highlight'];
+    }
+    return [];
+  },
+};
+</script>
+```
+
+### HighlightContext
+
+All callbacks receive a context object with these properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `rowIndex` | `number \| null` | Row index (null for column-only context) |
+| `colIndex` | `number \| null` | Column index (null for row-only context) |
+| `column` | `HighlightColumnInfo` | Column definition (for column/cell contexts) |
+| `rowData` | `TData` | Row data (for row/cell contexts) |
+| `isHovered` | `boolean` | Whether this row/column/cell is hovered |
+| `isActive` | `boolean` | Whether this contains the active cell |
+| `isSelected` | `boolean` | Whether this is in the selection range |
+
+For more examples, see the [Highlighting Example](/docs/vue/examples/highlighting).
+
 ## Container Styling
 
 ```vue

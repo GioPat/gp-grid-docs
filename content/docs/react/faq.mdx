@@ -47,25 +47,19 @@ Common causes:
 
 ## Styling
 
-### How do I style alternating rows?
+### How do I enable dark mode?
 
-```css
-.gp-grid-row:nth-child(even) {
-  background-color: rgba(0, 0, 0, 0.02);
-}
+Use the `darkMode` prop:
+
+```tsx
+<Grid darkMode={true} ... />
 ```
 
-### How do I change selection colors?
+For theme integration (e.g., next-themes), see the [Styling Guide](/docs/react/guides/styling).
 
-```css
-.gp-grid-cell--active {
-  outline-color: #your-color;
-}
+### How do I customize the grid appearance?
 
-.gp-grid-cell--selected {
-  background-color: rgba(your-rgb, 0.1);
-}
-```
+Override CSS classes in your global styles. Common classes include `.gp-grid-header`, `.gp-grid-cell--active`, and `.gp-grid-row`. For complete styling options including Tailwind CSS and custom renderers, see the [Styling Guide](/docs/react/guides/styling).
 
 ## Data
 

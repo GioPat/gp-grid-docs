@@ -22,11 +22,19 @@ import {
   memoryUsage1m,
 } from "@/lib/benchmark-data";
 
-type BenchmarkCategory = "scroll" | "render" | "sortFilter" | "memory";
 type RowSize = "10k" | "100k" | "1m";
 
-interface BenchmarkGridProps {
-  category: BenchmarkCategory;
+type CategoryRowMap = {
+  scroll: ScrollBenchmarkRow;
+  render: RenderBenchmarkRow;
+  sortFilter: SortFilterBenchmarkRow;
+  memory: MemoryBenchmarkRow;
+};
+
+type BenchmarkCategory = keyof CategoryRowMap;
+
+interface BenchmarkGridProps<T extends BenchmarkCategory> {
+  category: T;
   rowSize: RowSize;
 }
 
@@ -75,36 +83,34 @@ function getColumns(category: BenchmarkCategory): ColumnDefinition[] {
   }
 }
 
-function getData(
-  category: BenchmarkCategory,
+function getData<T extends BenchmarkCategory>(
+  category: T,
   rowSize: RowSize
-): ScrollBenchmarkRow[] | RenderBenchmarkRow[] | SortFilterBenchmarkRow[] | MemoryBenchmarkRow[] {
-  switch (category) {
-    case "scroll":
-      return rowSize === "10k"
-        ? scrollPerformance10k
-        : rowSize === "100k"
-          ? scrollPerformance100k
-          : scrollPerformance1m;
-    case "render":
-      return rowSize === "10k"
-        ? renderPerformance10k
-        : rowSize === "100k"
-          ? renderPerformance100k
-          : renderPerformance1m;
-    case "sortFilter":
-      return rowSize === "10k"
-        ? sortFilterPerformance10k
-        : rowSize === "100k"
-          ? sortFilterPerformance100k
-          : sortFilterPerformance1m;
-    case "memory":
-      return rowSize === "10k"
-        ? memoryUsage10k
-        : rowSize === "100k"
-          ? memoryUsage100k
-          : memoryUsage1m;
-  }
+): CategoryRowMap[T][] {
+  const dataMap = {
+    scroll: {
+      "10k": scrollPerformance10k,
+      "100k": scrollPerformance100k,
+      "1m": scrollPerformance1m,
+    },
+    render: {
+      "10k": renderPerformance10k,
+      "100k": renderPerformance100k,
+      "1m": renderPerformance1m,
+    },
+    sortFilter: {
+      "10k": sortFilterPerformance10k,
+      "100k": sortFilterPerformance100k,
+      "1m": sortFilterPerformance1m,
+    },
+    memory: {
+      "10k": memoryUsage10k,
+      "100k": memoryUsage100k,
+      "1m": memoryUsage1m,
+    },
+  };
+
+  return dataMap[category][rowSize] as CategoryRowMap[T][];
 }
 
 // Format FPS values to 2 decimal places
@@ -117,16 +123,16 @@ function formatScrollData(data: ScrollBenchmarkRow[]): ScrollBenchmarkRow[] {
   }));
 }
 
-export function BenchmarkGrid({ category, rowSize }: BenchmarkGridProps) {
+export function BenchmarkGrid<T extends BenchmarkCategory>({ category, rowSize }: BenchmarkGridProps<T>) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   const columns = useMemo(() => getColumns(category), [category]);
   const rawData = useMemo(() => getData(category, rowSize), [category, rowSize]);
-  const rowData = useMemo(() => {
+  const rowData = useMemo((): CategoryRowMap[T][] => {
     if (category === "scroll") {
-      return formatScrollData(rawData as ScrollBenchmarkRow[]);
+      return formatScrollData(rawData as ScrollBenchmarkRow[]) as CategoryRowMap[T][];
     }
     return rawData;
   }, [category, rawData]);
@@ -138,14 +144,14 @@ export function BenchmarkGrid({ category, rowSize }: BenchmarkGridProps) {
   if (!mounted) {
     return (
       <div className="w-full">
-        <div className="w-full h-[180px] rounded-lg overflow-hidden border border-fd-border bg-fd-muted animate-pulse" />
+        <div className="w-full h-48 rounded-lg overflow-hidden border border-fd-border bg-fd-muted animate-pulse" />
       </div>
     );
   }
 
   return (
     <div className="w-full my-4">
-      <div className="w-full h-[180px] rounded-lg overflow-hidden border border-fd-border">
+      <div className="w-full h-48 rounded-lg overflow-hidden border border-fd-border">
         <Grid
           columns={columns}
           rowData={rowData}
