@@ -7,7 +7,7 @@ import {
   createMutableClientDataSource,
   type ColumnDefinition,
   type CellRendererParams,
-} from "gp-grid-react";
+} from "@gp-grid/react";
 
 interface StockTick {
   id: number;
@@ -201,11 +201,10 @@ export function LiveDataDemo() {
         <div className="flex items-center gap-2">
           <button
             onClick={toggleStreaming}
-            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-opacity ${
-              isStreaming
-                ? "bg-fd-muted text-fd-muted-foreground hover:opacity-80"
-                : "bg-fd-primary text-fd-primary-foreground hover:opacity-90"
-            }`}
+            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-opacity ${isStreaming
+              ? "bg-fd-muted text-fd-muted-foreground hover:opacity-80"
+              : "bg-fd-primary text-fd-primary-foreground hover:opacity-90"
+              }`}
           >
             {isStreaming ? "Stop Stream" : "Start Stream"}
           </button>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { Grid, type ColumnDefinition } from "gp-grid-react";
+import { Grid, type ColumnDefinition } from "@gp-grid/react";
 
 const ROW_COUNT = 1_500_000;
 

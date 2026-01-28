@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { Grid, type ColumnDefinition } from "gp-grid-react";
+import { Grid, type ColumnDefinition } from "@gp-grid/react";
 
 type HighlightMode = "row" | "column" | "crosshairs" | "cell";
 

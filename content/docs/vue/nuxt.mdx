@@ -10,7 +10,7 @@ gp-grid works seamlessly with Nuxt 3. This guide covers Nuxt-specific setup and 
 ## Installation
 
 ```bash
-pnpm add gp-grid-vue
+pnpm add @gp-grid/vue
 ```
 
 ## Basic Usage
@@ -20,7 +20,7 @@ Create a component or use directly in pages:
 ```vue
 <!-- pages/grid.vue -->
 <script setup lang="ts">
-import { Grid, type ColumnDefinition } from "gp-grid-vue";
+import { Grid, type ColumnDefinition } from "@gp-grid/vue";
 
 const columns: ColumnDefinition[] = [
   { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
@@ -67,7 +67,7 @@ Using `@nuxtjs/color-mode`:
 
 ```vue
 <script setup lang="ts">
-import { Grid } from "gp-grid-vue";
+import { Grid } from "@gp-grid/vue";
 
 const colorMode = useColorMode();
 const isDark = computed(() => colorMode.value === "dark");
@@ -115,7 +115,7 @@ export default defineEventHandler(async (event) => {
 
 ```vue
 <script setup lang="ts">
-import { Grid, createServerDataSource } from "gp-grid-vue";
+import { Grid, createServerDataSource } from "@gp-grid/vue";
 
 const dataSource = createServerDataSource(async (request) => {
   return await $fetch("/api/grid-data", {
@@ -144,7 +144,7 @@ Create a reusable composable:
 
 ```ts
 // composables/useGrid.ts
-import { type ColumnDefinition } from "gp-grid-vue";
+import { type ColumnDefinition } from "@gp-grid/vue";
 
 export function useGrid<T>(columns: ColumnDefinition[], fetchFn: () => Promise<T[]>) {
   const data = ref<T[]>([]);

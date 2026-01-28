@@ -26,7 +26,7 @@ const data = ref([
 
 ```vue
 <script setup>
-import { createClientDataSource } from "gp-grid-vue";
+import { createClientDataSource } from "@gp-grid/vue";
 
 const dataSource = createClientDataSource(largeDataset, {
   useWorker: true,  // Web Worker for sorting
@@ -44,7 +44,7 @@ For CRUD operations:
 
 ```vue
 <script setup>
-import { createMutableClientDataSource } from "gp-grid-vue";
+import { createMutableClientDataSource } from "@gp-grid/vue";
 
 const dataSource = createMutableClientDataSource(data, {
   getRowId: (row) => row.id,
@@ -68,7 +68,7 @@ function deleteRow(id: number) {
 
 ```vue
 <script setup>
-import { createServerDataSource } from "gp-grid-vue";
+import { createServerDataSource } from "@gp-grid/vue";
 
 const dataSource = createServerDataSource(async (request) => {
   const response = await fetch("/api/data", {

@@ -23,7 +23,7 @@ This demo shows three custom renderers in action:
 Apply a renderer to all cells:
 
 ```tsx
-import { Grid, type CellRendererParams } from "gp-grid-react";
+import { Grid, type CellRendererParams } from "@gp-grid/react";
 
 const MyCellRenderer = (params: CellRendererParams) => {
   return (
@@ -84,7 +84,7 @@ const columns: ColumnDefinition[] = [
 Customize column headers:
 
 ```tsx
-import { type HeaderRendererParams } from "gp-grid-react";
+import { type HeaderRendererParams } from "@gp-grid/react";
 
 const MyHeaderRenderer = (params: HeaderRendererParams) => {
   return (

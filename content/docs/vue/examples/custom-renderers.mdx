@@ -11,7 +11,7 @@ Customize how cells and headers are rendered.
 
 ```vue
 <script setup lang="ts">
-import { Grid, type CellRendererParams } from "gp-grid-vue";
+import { Grid, type CellRendererParams } from "@gp-grid/vue";
 import { h } from "vue";
 
 const StatusRenderer = (params: CellRendererParams) => {
@@ -52,7 +52,7 @@ You can also use Vue components:
 ```vue
 <!-- StatusCell.vue -->
 <script setup lang="ts">
-import { type CellRendererParams } from "gp-grid-vue";
+import { type CellRendererParams } from "@gp-grid/vue";
 
 defineProps<CellRendererParams>();
 </script>
@@ -71,7 +71,7 @@ defineProps<CellRendererParams>();
 ```vue
 <!-- Parent component -->
 <script setup lang="ts">
-import { Grid } from "gp-grid-vue";
+import { Grid } from "@gp-grid/vue";
 import StatusCell from "./StatusCell.vue";
 import { h } from "vue";
 
@@ -85,7 +85,7 @@ const StatusRenderer = (params: CellRendererParams) => {
 
 ```vue
 <script setup lang="ts">
-import { type HeaderRendererParams } from "gp-grid-vue";
+import { type HeaderRendererParams } from "@gp-grid/vue";
 import { h } from "vue";
 
 const CustomHeader = (params: HeaderRendererParams) => {

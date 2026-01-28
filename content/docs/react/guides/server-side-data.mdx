@@ -17,7 +17,7 @@ For very large datasets or when data must remain on the server, use server-side 
 ## Basic Setup
 
 ```tsx
-import { Grid, createServerDataSource } from "gp-grid-react";
+import { Grid, createServerDataSource } from "@gp-grid/react";
 
 const dataSource = createServerDataSource(async (request) => {
   const response = await fetch("/api/grid-data", {

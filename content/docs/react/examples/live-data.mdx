@@ -31,7 +31,7 @@ import {
   Grid,
   createMutableClientDataSource,
   type ColumnDefinition,
-} from "gp-grid-react";
+} from "@gp-grid/react";
 
 interface StockTick {
   id: number;
@@ -187,7 +187,7 @@ export function LiveDataDemo() {
 The "Change" column uses a custom renderer to display positive values in green and negative values in red:
 
 ```tsx
-import { type CellRendererParams } from "gp-grid-react";
+import { type CellRendererParams } from "@gp-grid/react";
 
 const ChangeRenderer = (params: CellRendererParams) => {
   const value = params.value as number;

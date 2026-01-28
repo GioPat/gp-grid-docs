@@ -6,7 +6,7 @@ import {
   Grid,
   type ColumnDefinition,
   type CellRendererParams,
-} from "gp-grid-react";
+} from "@gp-grid/react";
 
 interface Employee {
   id: number;

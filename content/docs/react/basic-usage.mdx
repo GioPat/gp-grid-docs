@@ -12,7 +12,7 @@ This guide covers the fundamentals of using gp-grid in your React application.
 The simplest grid requires three things: columns, data, and a row height.
 
 ```tsx
-import { Grid, type ColumnDefinition } from "gp-grid-react";
+import { Grid, type ColumnDefinition } from "@gp-grid/react";
 
 const columns: ColumnDefinition[] = [
   { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
@@ -105,7 +105,7 @@ For dynamic theme support with next-themes:
 "use client";
 
 import { useTheme } from "next-themes";
-import { Grid } from "gp-grid-react";
+import { Grid } from "@gp-grid/react";
 
 function ThemedGrid() {
   const { resolvedTheme } = useTheme();

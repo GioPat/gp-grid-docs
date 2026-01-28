@@ -27,7 +27,7 @@ This internally creates a client data source.
 For more control, use `createClientDataSource`:
 
 ```tsx
-import { Grid, createClientDataSource } from "gp-grid-react";
+import { Grid, createClientDataSource } from "@gp-grid/react";
 
 const data = generateLargeDataset(1000000);
 const dataSource = createClientDataSource(data);
@@ -70,7 +70,7 @@ const dataSource = createClientDataSource(data, {
 For CRUD operations and real-time data updates, use `createMutableClientDataSource`. This data source is backed by a robust **transaction system** that enables efficient batching and optimistic updates.
 
 ```tsx
-import { createMutableClientDataSource } from "gp-grid-react";
+import { createMutableClientDataSource } from "@gp-grid/react";
 
 const dataSource = createMutableClientDataSource(data, {
   getRowId: (row) => row.id,  // Required: unique ID accessor
@@ -176,7 +176,7 @@ See the [Live Data example](/docs/react/examples/live-data) for a complete imple
 For server-side sorting, filtering, and pagination:
 
 ```tsx
-import { createServerDataSource } from "gp-grid-react";
+import { createServerDataSource } from "@gp-grid/react";
 
 const dataSource = createServerDataSource(async (request) => {
   const { pagination, sort, filter } = request;
