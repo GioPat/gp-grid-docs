@@ -34,6 +34,10 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
+        url: "/favicon-for-light.svg",
+        type: "image/svg+xml",
+      },
+      {
         url: "/favicon-for-dark.svg",
         type: "image/svg+xml",
         media: "(prefers-color-scheme: dark)",
