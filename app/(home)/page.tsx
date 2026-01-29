@@ -70,13 +70,36 @@ export default function HomePage() {
             >
               Why GP-Grid
             </Link>
+          </div>
+          {/* Package Registry Links */}
+          <div className="flex flex-wrap gap-3 justify-center mt-4">
             <a
-              href="https://github.com/GioPat/gp-grid"
+              href="https://www.npmjs.com/org/gp-grid"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-fd-border font-medium hover:bg-fd-accent transition-colors"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-fd-border font-medium hover:bg-fd-accent transition-colors"
+              aria-label="View on NPM"
             >
-              View on GitHub
+              <svg viewBox="0 0 18 7" height="28" aria-hidden="true">
+                <path fill="#CB3837" d="M0,0v6h5v1h4v-1h9v-6" />
+                <path fill="#FFF" d="M1,1v4h2v-3h1v3h1v-4h1v5h2v-4h1v2h-1v1h2v-4h1v4h2v-3h1v3h1v-3h1v3h1v-4" />
+              </svg>
+            </a>
+            <a
+              href="https://jsr.io/@gp-grid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-lg border border-fd-border font-medium hover:bg-fd-accent transition-colors"
+              aria-label="View on JSR"
+            >
+              <svg viewBox="0 0 13 7" height="28" aria-hidden="true">
+                <path d="M0,2h2v-2h7v1h4v4h-2v2h-7v-1h-4" fill="#083344" />
+                <g fill="#f7df1e">
+                  <path d="M1,3h1v1h1v-3h1v4h-3" />
+                  <path d="M5,1h3v1h-2v1h2v3h-3v-1h2v-1h-2" />
+                  <path d="M9,2h3v2h-1v-1h-1v3h-1" />
+                </g>
+              </svg>
             </a>
           </div>
         </section>

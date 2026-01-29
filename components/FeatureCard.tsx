@@ -79,16 +79,10 @@ export const FeatureCard = ({
       onTouchStart={handleTouchStart}
     >
       <div
+        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-fd-primary/20 to-transparent"
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%)",
           transform: animating ? "translateX(100%)" : "translateX(-100%)",
           transition: animating ? "transform 0.5s ease-in-out" : "none",
-          pointerEvents: "none",
         }}
       />
       <div className="relative z-10">

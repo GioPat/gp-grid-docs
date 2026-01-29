@@ -1,5 +1,27 @@
 import { Logo } from "@/components/Logo";
+import { GitHubStars } from "@/components/GitHubStars";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+
+const sharedLinks: BaseLayoutProps["links"] = [
+  {
+    text: "Docs",
+    url: "/docs",
+  },
+  {
+    text: "React",
+    url: "/docs/react",
+  },
+  {
+    text: "Vue",
+    url: "/docs/vue",
+  },
+  {
+    type: "custom",
+    children: <GitHubStars key="github-stars" />,
+    secondary: true,
+    on: "nav",
+  },
+];
 
 // Base options for homepage (no framework switcher)
 export function baseOptions(): BaseLayoutProps {
@@ -13,7 +35,7 @@ export function baseOptions(): BaseLayoutProps {
       ),
       transparentMode: "top",
     },
-    githubUrl: "https://github.com/GioPat/gp-grid",
+    links: sharedLinks,
   };
 }
 
@@ -24,6 +46,6 @@ export function docsLayoutOptions(): BaseLayoutProps {
       title: <Logo />,
       transparentMode: "top",
     },
-    githubUrl: "https://github.com/GioPat/gp-grid",
+    links: sharedLinks,
   };
 }
