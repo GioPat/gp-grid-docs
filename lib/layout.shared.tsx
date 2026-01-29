@@ -2,19 +2,24 @@ import { Logo } from "@/components/Logo";
 import { GitHubStars } from "@/components/GitHubStars";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
-const sharedLinks: BaseLayoutProps["links"] = [
+const baseLinks: BaseLayoutProps["links"] = [
   {
-    text: "Docs",
+    text: "Documentation",
     url: "/docs",
   },
   {
-    text: "React",
-    url: "/docs/react",
+    text: "Demo",
+    url: "https://stackblitz.com/edit/vitejs-vite-opx8yuxr?file=src%2FApp.tsx",
+    external: true,
   },
   {
-    text: "Vue",
-    url: "/docs/vue",
+    text: "Support",
+    url: "/support",
   },
+];
+
+const homeLinks: BaseLayoutProps["links"] = [
+  ...baseLinks,
   {
     type: "custom",
     children: <GitHubStars key="github-stars" />,
@@ -35,7 +40,7 @@ export function baseOptions(): BaseLayoutProps {
       ),
       transparentMode: "top",
     },
-    links: sharedLinks,
+    links: homeLinks,
   };
 }
 
@@ -46,6 +51,6 @@ export function docsLayoutOptions(): BaseLayoutProps {
       title: <Logo />,
       transparentMode: "top",
     },
-    links: sharedLinks,
+    links: baseLinks,
   };
 }
