@@ -24,7 +24,6 @@ const homeLinks: BaseLayoutProps["links"] = [
     type: "custom",
     children: <GitHubStars key="github-stars" />,
     secondary: true,
-    on: "nav",
   },
 ];
 
