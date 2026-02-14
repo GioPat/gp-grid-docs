@@ -5,7 +5,7 @@
     "": {
       "name": "gp-grid-docs",
       "dependencies": {
-        "@gp-grid/react": "^0.8.1",
+        "@gp-grid/react": "^0.8.2",
         "@vercel/analytics": "^1.6.1",
         "fumadocs-core": "^16.4.3",
         "fumadocs-mdx": "^14.2.4",
@@ -154,9 +154,9 @@
 
     "@fumadocs/ui": ["@fumadocs/ui@16.4.3", "", { "dependencies": { "fumadocs-core": "16.4.3", "next-themes": "^0.4.6", "postcss-selector-parser": "^7.1.1", "tailwind-merge": "^3.4.0" }, "peerDependencies": { "@types/react": "*", "next": "16.x.x", "react": "^19.2.0", "react-dom": "^19.2.0", "tailwindcss": "^4.0.0" }, "optionalPeers": ["@types/react", "next", "tailwindcss"] }, "sha512-KXMWieCzgDc4pchFHf3AXPB589jHAUTz+kOGWTszOqVRBrdX2DQYEFnhJ4PG5KEiLs9dwYmC26VcKHWEGtxqXw=="],
 
-    "@gp-grid/core": ["@gp-grid/core@0.8.1", "", {}, "sha512-0b8ne6RJJubEOzA3Xyo+FOyMk0CHcH/mkkTq+aAXAB6wxDqBkC7hh7YzTlhojYpxUHSzTB5W9CZ5BrsLeN2M6A=="],
+    "@gp-grid/core": ["@gp-grid/core@0.8.2", "", {}, "sha512-MFNUXEeeXBTwP+Yz/JT+dkCFsA3k9WQxnDzENNItUQRpvn4sP5IDu2vWTS2dyerPkJZvvHppyL+E2S55tge8AA=="],
 
-    "@gp-grid/react": ["@gp-grid/react@0.8.1", "", { "dependencies": { "@gp-grid/core": "0.8.1" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.1.1" } }, "sha512-NekMMwK8ENy6aIH0K81awI82CsWPsV6JBo+szJhNCpPT5PA9JnHp9M/JshLpDtscNQrWPPX3/zYFXuUg+BnngA=="],
+    "@gp-grid/react": ["@gp-grid/react@0.8.2", "", { "dependencies": { "@gp-grid/core": "0.8.2" }, "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.1.1" } }, "sha512-cPhKWJJ6TKIrYUU+0QJcL8wclswYCZ92+sVkWRdOzy8k2iPZHDmLMWpbr4a2BGQjqo0i/sPMJcK2pkTyxxnOqw=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.1", "", {}, "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA=="],
 

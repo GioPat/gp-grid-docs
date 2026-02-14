@@ -60,7 +60,8 @@ function generateInitialData(count: number): StockTick[] {
 
 // Custom renderer for the change column - shows positive/negative with colors
 const ChangeRenderer = (params: CellRendererParams) => {
-  const value = params.value as number;
+  const value = params.value as number | null;
+  if (value == null) return null;
   const isPositive = value >= 0;
 
   return (
