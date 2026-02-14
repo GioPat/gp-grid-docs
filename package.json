@@ -12,11 +12,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@gp-grid/react": "^0.8.1",
     "@vercel/analytics": "^1.6.1",
     "fumadocs-core": "^16.4.3",
     "fumadocs-mdx": "^14.2.4",
     "fumadocs-ui": "16.4.3",
-    "@gp-grid/react": "^0.7.4",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
     "react": "^19.2.3",
