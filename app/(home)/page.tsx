@@ -48,7 +48,10 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
             The Fastest{" "}
             <span className="text-fd-primary">
-              <RotatingText words={["React", "Vue", "TypeScript"]} />
+              <RotatingText
+                interval={1000}
+                words={["React", "Vue", "TypeScript"]}
+              />
             </span>{" "}
             Data Grid
           </h1>
@@ -82,7 +85,10 @@ export default function HomePage() {
             >
               <svg viewBox="0 0 18 7" height="28" aria-hidden="true">
                 <path fill="#CB3837" d="M0,0v6h5v1h4v-1h9v-6" />
-                <path fill="#FFF" d="M1,1v4h2v-3h1v3h1v-4h1v5h2v-4h1v2h-1v1h2v-4h1v4h2v-3h1v3h1v-3h1v3h1v-4" />
+                <path
+                  fill="#FFF"
+                  d="M1,1v4h2v-3h1v3h1v-4h1v5h2v-4h1v2h-1v1h2v-4h1v4h2v-3h1v3h1v-3h1v3h1v-4"
+                />
               </svg>
             </a>
             <a
@@ -111,8 +117,8 @@ export default function HomePage() {
               See it in Action
             </h2>
             <p className="text-fd-muted-foreground text-center mb-8">
-              Scroll, filter and sort through this sample of 1.5 million rows with
-              buttery-smooth performance
+              Scroll, filter and sort through this sample of 1.5 million rows
+              with buttery-smooth performance
             </p>
             <GridDemo />
           </div>

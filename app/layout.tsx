@@ -32,22 +32,10 @@ export const metadata: Metadata = {
     description: siteConfig.description,
   },
   icons: {
-    icon: [
-      {
-        url: "/favicon-for-light.svg",
-        type: "image/svg+xml",
-      },
-      {
-        url: "/favicon-for-dark.svg",
-        type: "image/svg+xml",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/favicon-for-light.svg",
-        type: "image/svg+xml",
-        media: "(prefers-color-scheme: light)",
-      },
-    ],
+    icon: {
+      url: "/favicon.svg",
+      type: "image/svg+xml",
+    },
   },
 };
 
