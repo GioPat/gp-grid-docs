@@ -1,0 +1,77 @@
+---
+title: Column Dragging
+description: Reorder columns by dragging their headers
+---
+
+# Column Dragging
+
+gp-grid supports column reordering by dragging column headers.
+
+## Basic Usage
+
+Column dragging is enabled by default. Provide an `onColumnMoved` handler to update the column order:
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+import { Grid, type ColumnDefinition } from "@gp-grid/vue";
+
+const columns = ref<ColumnDefinition[]>([
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 150, headerName: "Name" },
+  { field: "email", cellDataType: "text", width: 250, headerName: "Email" },
+  { field: "role", cellDataType: "text", width: 120, headerName: "Role" },
+]);
+
+const data = ref([/* your data */]);
+
+function handleColumnMoved(fromIndex: number, toIndex: number) {
+  const next = [...columns.value];
+  const [moved] = next.splice(fromIndex, 1);
+  next.splice(toIndex, 0, moved);
+  columns.value = next;
+}
+</script>
+
+<template>
+  <div style="height: 400px">
+    <Grid
+      :columns="columns"
+      :row-data="data"
+      :row-height="36"
+      @column-moved="handleColumnMoved"
+    />
+  </div>
+</template>
+```
+
+## Disable Column Dragging
+
+### Per Column
+
+Set `movable: false` on individual columns:
+
+```vue
+<script setup lang="ts">
+const columns = ref<ColumnDefinition[]>([
+  { field: "id", cellDataType: "number", width: 80, movable: false },
+  { field: "name", cellDataType: "text", width: 150 },
+  { field: "email", cellDataType: "text", width: 250 },
+]);
+</script>
+```
+
+## How It Works
+
+1. Click and hold a column header
+2. Drag it to the desired position
+3. Release to complete the reorder
+4. The `column-moved` event fires with `fromIndex` and `toIndex`
+5. Update the columns array to reflect the new order
+
+## Key Points
+
+- Column dragging is enabled by default (`movable: true`)
+- The consumer is responsible for reordering the columns array
+- Set `movable: false` per column to prevent dragging
+- Dragging uses a threshold to avoid triggering on clicks

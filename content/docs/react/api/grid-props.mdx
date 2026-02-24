@@ -24,6 +24,10 @@ interface GridProps<TData extends Row = Row> {
   cellRenderer?: ReactCellRenderer;
   editRenderer?: ReactEditRenderer;
   headerRenderer?: ReactHeaderRenderer;
+  rowDragEntireRow?: boolean;
+  onRowDragEnd?: (sourceIndex: number, targetIndex: number) => void;
+  onColumnMoved?: (fromIndex: number, toIndex: number) => void;
+  onColumnResized?: (colIndex: number, newWidth: number) => void;
 }
 ```
 
@@ -136,6 +140,81 @@ Dampening factor for wheel scrolling (0-1). Lower values = smoother but slower s
 
 ```tsx
 <Grid columns={columns} rowData={data} rowHeight={36} wheelDampening={0.2} />
+```
+
+## Drag & Reorder Props
+
+### rowDragEntireRow
+
+**Type:** `boolean`
+**Default:** `false`
+
+When enabled, clicking and dragging any cell in a row initiates a row drag instead of cell selection.
+
+```tsx
+<Grid
+  columns={columns}
+  dataSource={dataSource}
+  rowHeight={36}
+  rowDragEntireRow={true}
+  onRowDragEnd={(from, to) => dataSource.moveRow(from, to)}
+/>
+```
+
+### onRowDragEnd
+
+**Type:** `(sourceIndex: number, targetIndex: number) => void`
+
+Called when a row is dropped after dragging. The consumer is responsible for reordering the data.
+
+```tsx
+<Grid
+  columns={columns}
+  dataSource={dataSource}
+  rowHeight={36}
+  onRowDragEnd={(sourceIndex, targetIndex) => {
+    dataSource.moveRow(sourceIndex, targetIndex);
+  }}
+/>
+```
+
+### onColumnMoved
+
+**Type:** `(fromIndex: number, toIndex: number) => void`
+
+Called when a column header is dragged to a new position. The consumer is responsible for reordering the columns array.
+
+```tsx
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  onColumnMoved={(fromIndex, toIndex) => {
+    setColumns((prev) => {
+      const next = [...prev];
+      const [moved] = next.splice(fromIndex, 1);
+      next.splice(toIndex, 0, moved);
+      return next;
+    });
+  }}
+/>
+```
+
+### onColumnResized
+
+**Type:** `(colIndex: number, newWidth: number) => void`
+
+Called when a column is resized by dragging the header edge.
+
+```tsx
+<Grid
+  columns={columns}
+  rowData={data}
+  rowHeight={36}
+  onColumnResized={(colIndex, newWidth) => {
+    console.log(`Column ${colIndex} resized to ${newWidth}px`);
+  }}
+/>
 ```
 
 ## Renderer Props

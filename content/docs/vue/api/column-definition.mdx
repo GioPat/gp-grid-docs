@@ -17,9 +17,15 @@ interface ColumnDefinition {
   editable?: boolean;
   sortable?: boolean;
   filterable?: boolean;
-  cellRenderer?: string;
-  editRenderer?: string;
-  headerRenderer?: string;
+  hidden?: boolean;
+  resizable?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  movable?: boolean;
+  rowDrag?: boolean;
+  cellRenderer?: string | ((params: CellRendererParams) => unknown);
+  editRenderer?: string | ((params: EditRendererParams) => unknown);
+  headerRenderer?: string | ((params: HeaderRendererParams) => unknown);
 }
 ```
 
@@ -79,11 +85,69 @@ Column width in pixels.
 **Type:** `boolean`
 **Default:** `true`
 
+### hidden
+
+**Type:** `boolean`
+**Default:** `false`
+
+Whether the column is hidden.
+
+### resizable
+
+**Type:** `boolean`
+**Default:** `true`
+
+Whether the column can be resized by dragging the header edge.
+
+### minWidth / maxWidth
+
+**Type:** `number`
+**Default:** `50` / `undefined`
+
+Minimum and maximum width constraints when resizing.
+
+### movable
+
+**Type:** `boolean`
+**Default:** `true`
+
+Whether the column can be reordered by dragging its header.
+
+### rowDrag
+
+**Type:** `boolean`
+**Default:** `false`
+
+Whether this column acts as a drag handle for row dragging.
+
 ### cellRenderer / editRenderer / headerRenderer
 
-**Type:** `string`
+**Type:** `string | ((params) => unknown)`
 
-Key to look up in renderer registry.
+Pass a render function directly or a string key to look up in the renderer registry.
+
+```vue
+<script setup lang="ts">
+const columns: ColumnDefinition[] = [
+  {
+    field: "status",
+    cellDataType: "text",
+    width: 100,
+    // Inline function — no registry needed
+    cellRenderer: (params) => {
+      const status = params.value as string;
+      return status === "Active" ? `✓ ${status}` : status;
+    },
+  },
+  {
+    field: "priority",
+    cellDataType: "text",
+    width: 100,
+    cellRenderer: "priority",  // String key — looks up from registry
+  },
+];
+</script>
+```
 
 ## Example
 

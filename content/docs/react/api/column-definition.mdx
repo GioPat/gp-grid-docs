@@ -17,9 +17,15 @@ interface ColumnDefinition {
   editable?: boolean;
   sortable?: boolean;
   filterable?: boolean;
-  cellRenderer?: string;
-  editRenderer?: string;
-  headerRenderer?: string;
+  hidden?: boolean;
+  resizable?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  movable?: boolean;
+  rowDrag?: boolean;
+  cellRenderer?: string | ((params: CellRendererParams) => ReactNode);
+  editRenderer?: string | ((params: EditRendererParams) => ReactNode);
+  headerRenderer?: string | ((params: HeaderRendererParams) => ReactNode);
 }
 ```
 
@@ -145,34 +151,131 @@ Enable filtering for this column.
 }
 ```
 
-### cellRenderer
+### hidden
 
-**Type:** `string`
+**Type:** `boolean`
+**Default:** `false`
 
-Key of the cell renderer from the `cellRenderers` registry.
+Whether the column is hidden. Hidden columns are not rendered but still exist in the definition.
 
 ```tsx
-// In column definition
-{ field: "status", cellDataType: "text", width: 100, cellRenderer: "status" }
+{
+  field: "internalId",
+  cellDataType: "text",
+  width: 100,
+  hidden: true  // Column exists but isn't visible
+}
+```
 
-// On Grid component
-<Grid
-  cellRenderers={{ status: StatusRenderer }}
-  // ...
-/>
+### resizable
+
+**Type:** `boolean`
+**Default:** `true`
+
+Whether the column can be resized by dragging the header edge.
+
+```tsx
+{
+  field: "id",
+  cellDataType: "number",
+  width: 80,
+  resizable: false  // Fixed width
+}
+```
+
+### minWidth
+
+**Type:** `number`
+**Default:** `50`
+
+Minimum width in pixels when resizing.
+
+### maxWidth
+
+**Type:** `number`
+**Default:** `undefined` (no limit)
+
+Maximum width in pixels when resizing.
+
+```tsx
+{
+  field: "name",
+  cellDataType: "text",
+  width: 150,
+  minWidth: 80,
+  maxWidth: 400
+}
+```
+
+### movable
+
+**Type:** `boolean`
+**Default:** `true`
+
+Whether the column can be moved/reordered by dragging its header.
+
+```tsx
+{
+  field: "id",
+  cellDataType: "number",
+  width: 80,
+  movable: false  // Cannot be reordered
+}
+```
+
+### rowDrag
+
+**Type:** `boolean`
+**Default:** `false`
+
+Whether this column acts as a drag handle for row dragging. When set to `true`, clicking and dragging cells in this column initiates a row drag.
+
+```tsx
+{
+  field: "handle",
+  cellDataType: "text",
+  width: 40,
+  rowDrag: true,
+  sortable: false
+}
+```
+
+### cellRenderer
+
+**Type:** `string | ((params: CellRendererParams) => ReactNode)`
+
+Custom cell renderer. Pass a function directly or a string key to look up from the `cellRenderers` registry.
+
+```tsx
+// Inline function — simplest approach
+{
+  field: "status",
+  cellDataType: "text",
+  width: 100,
+  cellRenderer: (params) => (
+    <div className="flex items-center h-full px-2">
+      <span className={params.value === "Active" ? "text-green-500" : "text-red-500"}>
+        {params.value as string}
+      </span>
+    </div>
+  )
+}
+
+// String key — reference from cellRenderers registry
+{ field: "status", cellDataType: "text", width: 100, cellRenderer: "status" }
 ```
 
 ### editRenderer
 
-**Type:** `string`
+**Type:** `string | ((params: EditRendererParams) => ReactNode)`
 
-Key of the edit renderer from the `editRenderers` registry.
+Custom edit renderer. Pass a function directly or a string key to look up from the `editRenderers` registry.
 
 ### headerRenderer
 
-**Type:** `string`
+**Type:** `string | ((params: HeaderRendererParams) => ReactNode)`
 
-Key of the header renderer from the `headerRenderers` registry.
+Custom header renderer. Pass a function directly or a string key to look up from the `headerRenderers` registry.
 
 ## Example
 

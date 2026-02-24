@@ -8,6 +8,8 @@
     "editing",
     "custom-renderers",
     "live-data",
-    "highlighting"
+    "highlighting",
+    "column-dragging",
+    "row-dragging"
   ]
 }

@@ -3,6 +3,7 @@
 import {
   CircleHelp,
   Gamepad2,
+  GripVertical,
   PencilRuler,
   Blocks,
   ScrollText,
@@ -17,7 +18,8 @@ type Feature =
   | "sortingFiltering"
   | "customRenderings"
   | "keyboardNavigation"
-  | "frameworkAgnostic";
+  | "frameworkAgnostic"
+  | "dragAndReorder";
 
 const getIconFromFeature = (feature: Feature): ReactElement => {
   switch (feature) {
@@ -31,6 +33,8 @@ const getIconFromFeature = (feature: Feature): ReactElement => {
       return <Sparkles className="w-6 h-6" />;
     case "keyboardNavigation":
       return <Gamepad2 className="w-6 h-6" />;
+    case "dragAndReorder":
+      return <GripVertical className="w-6 h-6" />;
     case "frameworkAgnostic":
       return <Blocks className="w-6 h-6" />;
     default:

@@ -41,9 +41,9 @@ const MyCellRenderer = (params: CellRendererParams) => {
 />
 ```
 
-### Per-Column Renderers
+### Per-Column Renderers (Inline)
 
-Register renderers by key and reference them in columns:
+Pass a renderer function directly in the column definition:
 
 ```tsx
 const StatusRenderer = (params: CellRendererParams) => {
@@ -61,6 +61,24 @@ const StatusRenderer = (params: CellRendererParams) => {
   );
 };
 
+const columns: ColumnDefinition[] = [
+  { field: "name", cellDataType: "text", width: 150 },
+  {
+    field: "status",
+    cellDataType: "text",
+    width: 120,
+    cellRenderer: StatusRenderer  // Pass the function directly
+  },
+];
+
+<Grid columns={columns} rowData={data} rowHeight={36} />
+```
+
+### Per-Column Renderers (Registry)
+
+Alternatively, register renderers by key and reference them by name. This is useful when the same renderer is shared across multiple columns:
+
+```tsx
 const columns: ColumnDefinition[] = [
   { field: "name", cellDataType: "text", width: 150 },
   {

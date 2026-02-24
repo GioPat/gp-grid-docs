@@ -1,0 +1,87 @@
+---
+title: Column Dragging
+description: Reorder columns by dragging their headers
+---
+
+# Column Dragging
+
+gp-grid supports column reordering by dragging column headers. This allows users to customize the column layout to their preference.
+
+## Interactive Demo
+
+Drag any column header to reorder it. The "ID" column has `movable: false` and stays in place.
+
+<ColumnDraggingDemo />
+
+## Basic Usage
+
+Column dragging is enabled by default. Simply provide an `onColumnMoved` callback to handle the reordering:
+
+```tsx
+import { useState, useCallback } from "react";
+import { Grid, type ColumnDefinition } from "@gp-grid/react";
+
+const initialColumns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, headerName: "ID" },
+  { field: "name", cellDataType: "text", width: 150, headerName: "Name" },
+  { field: "email", cellDataType: "text", width: 250, headerName: "Email" },
+  { field: "role", cellDataType: "text", width: 120, headerName: "Role" },
+];
+
+function ColumnDraggingGrid() {
+  const [columns, setColumns] = useState(initialColumns);
+
+  const handleColumnMoved = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setColumns((prev) => {
+        const next = [...prev];
+        const [moved] = next.splice(fromIndex, 1);
+        next.splice(toIndex, 0, moved);
+        return next;
+      });
+    },
+    []
+  );
+
+  return (
+    <div style={{ height: "400px" }}>
+      <Grid
+        columns={columns}
+        rowData={data}
+        rowHeight={36}
+        onColumnMoved={handleColumnMoved}
+      />
+    </div>
+  );
+}
+```
+
+## Disable Column Dragging
+
+### Per Column
+
+Set `movable: false` on individual columns to prevent them from being dragged:
+
+```tsx
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 80, movable: false },  // Cannot be dragged
+  { field: "name", cellDataType: "text", width: 150 },                 // Can be dragged (default)
+  { field: "email", cellDataType: "text", width: 250 },                // Can be dragged (default)
+];
+```
+
+## How It Works
+
+1. Click and hold a column header
+2. Drag it to the desired position — a visual indicator shows the drop target
+3. Release to complete the reorder
+4. The `onColumnMoved` callback fires with `fromIndex` and `toIndex`
+5. Your code reorders the columns array to reflect the new order
+
+## Key Points
+
+- Column dragging is enabled by default (`movable: true`)
+- The consumer is responsible for reordering the columns array in `onColumnMoved`
+- A ghost element follows the cursor during the drag
+- The drop target is highlighted to show where the column will land
+- Dragging uses a threshold to avoid triggering on simple clicks (which would sort)

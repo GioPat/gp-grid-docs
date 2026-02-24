@@ -4,6 +4,8 @@ import { LiveDataDemo } from '@/components/LiveDataDemo';
 import { CustomRenderersDemo } from '@/components/CustomRenderersDemo';
 import { HighlightingDemo } from '@/components/HighlightingDemo';
 import { BenchmarkGrid } from '@/components/BenchmarkGrid';
+import { ColumnDraggingDemo } from '@/components/ColumnDraggingDemo';
+import { RowDraggingDemo } from '@/components/RowDraggingDemo';
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -12,6 +14,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     CustomRenderersDemo,
     HighlightingDemo,
     BenchmarkGrid,
+    ColumnDraggingDemo,
+    RowDraggingDemo,
     ...components,
   };
 }

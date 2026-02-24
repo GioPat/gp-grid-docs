@@ -45,6 +45,33 @@ type CommitFillInstruction = { type: "COMMIT_FILL"; filledCells: Array<{ row: nu
 type CancelFillInstruction = { type: "CANCEL_FILL" };
 ```
 
+### Column Move Instructions
+
+```tsx
+type StartColumnMoveInstruction = { type: "START_COLUMN_MOVE"; colIndex: number };
+type UpdateColumnMoveInstruction = { type: "UPDATE_COLUMN_MOVE"; currentX: number; currentY: number; dropTargetIndex: number | null };
+type CommitColumnMoveInstruction = { type: "COMMIT_COLUMN_MOVE"; sourceColIndex: number; targetColIndex: number };
+type CancelColumnMoveInstruction = { type: "CANCEL_COLUMN_MOVE" };
+```
+
+### Row Drag Instructions
+
+```tsx
+type StartRowDragInstruction = { type: "START_ROW_DRAG"; rowIndex: number };
+type UpdateRowDragInstruction = { type: "UPDATE_ROW_DRAG"; currentX: number; currentY: number; dropTargetIndex: number | null };
+type CommitRowDragInstruction = { type: "COMMIT_ROW_DRAG"; sourceRowIndex: number; targetRowIndex: number };
+type CancelRowDragInstruction = { type: "CANCEL_ROW_DRAG" };
+```
+
+### Column Resize Instructions
+
+```tsx
+type StartColumnResizeInstruction = { type: "START_COLUMN_RESIZE"; colIndex: number };
+type UpdateColumnResizeInstruction = { type: "UPDATE_COLUMN_RESIZE"; colIndex: number; newWidth: number };
+type CommitColumnResizeInstruction = { type: "COMMIT_COLUMN_RESIZE"; colIndex: number; newWidth: number };
+type CancelColumnResizeInstruction = { type: "CANCEL_COLUMN_RESIZE" };
+```
+
 ### Data Instructions
 
 ```tsx

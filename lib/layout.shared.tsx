@@ -16,10 +16,6 @@ const baseLinks: BaseLayoutProps["links"] = [
     text: "Support",
     url: "/support",
   },
-];
-
-const homeLinks: BaseLayoutProps["links"] = [
-  ...baseLinks,
   {
     type: "custom",
     children: <GitHubStars key="github-stars" />,
@@ -39,7 +35,7 @@ export function baseOptions(): BaseLayoutProps {
       ),
       transparentMode: "top",
     },
-    links: homeLinks,
+    links: baseLinks,
   };
 }
 

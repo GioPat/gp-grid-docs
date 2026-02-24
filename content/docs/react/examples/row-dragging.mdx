@@ -1,0 +1,116 @@
+---
+title: Row Dragging
+description: Reorder rows by dragging
+---
+
+# Row Dragging
+
+gp-grid supports row reordering via drag and drop. You can either designate a column as a drag handle or allow dragging from any cell.
+
+## Interactive Demo
+
+Toggle between drag handle mode and entire row mode. Drag rows to reorder them.
+
+<RowDraggingDemo />
+
+## Drag Handle Column
+
+Set `rowDrag: true` on a column to make it act as a drag handle:
+
+```tsx
+import { useCallback } from "react";
+import {
+  Grid,
+  useGridData,
+  type ColumnDefinition,
+} from "@gp-grid/react";
+
+const columns: ColumnDefinition[] = [
+  { field: "id", cellDataType: "number", width: 40, rowDrag: true, sortable: false },
+  { field: "task", cellDataType: "text", width: 200, headerName: "Task" },
+  { field: "assignee", cellDataType: "text", width: 120, headerName: "Assignee" },
+  { field: "status", cellDataType: "text", width: 100, headerName: "Status" },
+];
+
+function RowDraggingGrid() {
+  const { dataSource } = useGridData(initialData, {
+    getRowId: (row) => row.id,
+  });
+
+  const handleRowDragEnd = useCallback(
+    (sourceIndex: number, targetIndex: number) => {
+      dataSource.moveRow(sourceIndex, targetIndex);
+    },
+    [dataSource]
+  );
+
+  return (
+    <div style={{ height: "400px" }}>
+      <Grid
+        columns={columns}
+        dataSource={dataSource}
+        rowHeight={36}
+        onRowDragEnd={handleRowDragEnd}
+      />
+    </div>
+  );
+}
+```
+
+## Entire Row Dragging
+
+Set `rowDragEntireRow={true}` on the Grid to allow dragging from any cell:
+
+```tsx
+<Grid
+  columns={columns}
+  dataSource={dataSource}
+  rowHeight={36}
+  rowDragEntireRow={true}
+  onRowDragEnd={handleRowDragEnd}
+/>
+```
+
+When `rowDragEntireRow` is enabled, clicking and dragging any cell initiates a row drag instead of a cell selection.
+
+## Data Reordering
+
+The consumer is responsible for reordering data after a drag. Use `dataSource.moveRow()` from a mutable data source:
+
+```tsx
+const { dataSource } = useGridData(data, {
+  getRowId: (row) => row.id,
+});
+
+const handleRowDragEnd = (sourceIndex: number, targetIndex: number) => {
+  dataSource.moveRow(sourceIndex, targetIndex);
+};
+```
+
+Or with `createMutableClientDataSource`:
+
+```tsx
+const dataSource = createMutableClientDataSource(data, {
+  getRowId: (row) => row.id,
+});
+
+const handleRowDragEnd = (sourceIndex: number, targetIndex: number) => {
+  dataSource.moveRow(sourceIndex, targetIndex);
+};
+```
+
+## How It Works
+
+1. Click and hold a drag handle (or any cell if `rowDragEntireRow` is enabled)
+2. Drag up or down — a drop indicator line shows the target position
+3. Release to drop the row
+4. `onRowDragEnd` fires with `sourceIndex` and `targetIndex`
+5. Call `dataSource.moveRow()` to reorder the data
+
+## Key Points
+
+- Use `rowDrag: true` on a column for a dedicated drag handle
+- Use `rowDragEntireRow={true}` on the Grid to drag from any cell
+- The drop indicator works correctly with virtual scrolling, even with millions of rows
+- Always use a mutable data source (`useGridData` or `createMutableClientDataSource`) for row reordering
+- The `onRowDragEnd` callback provides display indices — the data source handles the mapping

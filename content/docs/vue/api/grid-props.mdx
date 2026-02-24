@@ -111,6 +111,39 @@ Enable dark mode styling.
 
 Dampening factor for wheel scrolling (0-1).
 
+## Drag & Reorder Props
+
+### row-drag-entire-row
+
+**Type:** `boolean`
+**Default:** `false`
+
+When enabled, clicking and dragging any cell initiates a row drag.
+
+```vue
+<template>
+  <Grid :row-drag-entire-row="true" @row-drag-end="handleRowDragEnd" ... />
+</template>
+```
+
+### @row-drag-end
+
+**Type:** `(sourceIndex: number, targetIndex: number) => void`
+
+Emitted when a row is dropped after dragging. The consumer handles data reordering.
+
+### @column-moved
+
+**Type:** `(fromIndex: number, toIndex: number) => void`
+
+Emitted when a column header is dragged to a new position.
+
+### @column-resized
+
+**Type:** `(colIndex: number, newWidth: number) => void`
+
+Emitted when a column is resized by dragging the header edge.
+
 ## Renderer Props
 
 ### cell-renderer

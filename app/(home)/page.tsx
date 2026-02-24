@@ -55,10 +55,14 @@ export default function HomePage() {
             </span>{" "}
             Data Grid
           </h1>
-          <p className="text-lg md:text-xl text-fd-muted-foreground max-w-2xl mb-8">
-            A full-featured data grid with built-in virtual scrolling and DOM
-            slot (row) recycling, designed to render and manipulate hundreds of
-            thousands to millions of rows with high and predictable performance.
+          <p className="text-lg md:text-xl text-fd-muted-foreground max-w-4xl mb-4">
+            A modern, lightweight and fast data grid: no feature gating.
+            Built-in virtual scrolling, column and row drag & drop, editing,
+            filtering, and more.
+          </p>
+          <p className="text-sm text-fd-muted-foreground max-w-xl mb-8">
+            Apache 2.0 licensed. Zero external dependencies. Every feature
+            included for free.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
@@ -145,6 +149,11 @@ export default function HomePage() {
                 feature="sortingFiltering"
                 title="Sorting & Filtering"
                 description="Multi-column sorting and powerful filtering with client-side or server-side data."
+              />
+              <FeatureCard
+                feature="dragAndReorder"
+                title="Drag & Reorder"
+                description="Drag column headers to reorder, drag rows to rearrange. Full control with simple callbacks."
               />
               <FeatureCard
                 feature="customRenderings"
