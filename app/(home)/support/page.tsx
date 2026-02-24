@@ -33,23 +33,44 @@ export default function SupportPage() {
             </p>
 
             <div className="space-y-4">
-              <a
-                href="https://www.paypal.com/donate/?hosted_button_id=XCNMG6BR4ZMLY"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 p-4 rounded-lg border border-fd-border hover:bg-fd-accent transition-colors"
-              >
-                <Image
-                  src="/paypal.svg"
-                  alt="PayPal"
-                  width={100}
-                  height={32}
-                  className="h-8 w-auto"
-                />
-                <span className="text-sm text-fd-muted-foreground">
-                  One-time or recurring donation
-                </span>
-              </a>
+              <div className="p-4 rounded-lg border border-fd-border">
+                <div className="flex items-center gap-3 mb-3">
+                  <Image
+                    src="/paypal.svg"
+                    alt="PayPal"
+                    width={100}
+                    height={32}
+                    className="h-8 w-auto"
+                  />
+                  <span className="font-medium">PayPal</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://www.paypal.com/donate/?hosted_button_id=XCNMG6BR4ZMLY"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 p-2 rounded bg-fd-background text-xs break-all text-fd-primary hover:underline"
+                  >
+                    https://www.paypal.com/donate/?hosted_button_id=XCNMG6BR4ZMLY
+                  </a>
+                  <CopyButton text="https://www.paypal.com/donate/?hosted_button_id=XCNMG6BR4ZMLY" />
+                </div>
+                <div className="flex justify-center mt-3">
+                  <a
+                    href="https://www.paypal.com/donate/?hosted_button_id=XCNMG6BR4ZMLY"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      src="/images/donazione_paypal.png"
+                      alt="PayPal donation QR code"
+                      width={180}
+                      height={180}
+                      className="rounded-lg"
+                    />
+                  </a>
+                </div>
+              </div>
 
               <div className="p-4 rounded-lg border border-fd-border">
                 <div className="flex items-center gap-3 mb-3">
@@ -67,6 +88,15 @@ export default function SupportPage() {
                     {BITCOIN_ADDRESS}
                   </code>
                   <CopyButton text={BITCOIN_ADDRESS} />
+                </div>
+                <div className="flex justify-center mt-3">
+                  <Image
+                    src="/images/bc1qcukwmzver59eyqq442xyzscmxavqjt568kkc9m.png"
+                    alt="Bitcoin donation QR code"
+                    width={180}
+                    height={180}
+                    className="rounded-lg"
+                  />
                 </div>
               </div>
 
@@ -86,6 +116,15 @@ export default function SupportPage() {
                     {LIGHTNING_ADDRESS}
                   </code>
                   <CopyButton text={LIGHTNING_ADDRESS} />
+                </div>
+                <div className="flex justify-center mt-3">
+                  <Image
+                    src="/images/lightning.png"
+                    alt="Lightning Network donation QR code"
+                    width={180}
+                    height={180}
+                    className="rounded-lg"
+                  />
                 </div>
               </div>
             </div>
