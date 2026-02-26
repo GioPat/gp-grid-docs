@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useTheme } from "next-themes";
 import {
   Grid,
-  createMutableClientDataSource,
+  useGridData,
   type ColumnDefinition,
   type CellRendererParams,
 } from "@gp-grid/react";
@@ -100,53 +100,51 @@ export function LiveDataDemo() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
-  const dataSource = useMemo(() => {
-    const ds = createMutableClientDataSource<StockTick>(
-      generateInitialData(10),
-      {
-        getRowId: (row) => row.id,
-        debounceMs: 50,
-        onTransactionProcessed: (result) => {
-          setRowCount((prev) => prev + result.added - result.removed);
-        },
-      }
-    );
-    return ds;
-  }, []);
+  const { dataSource, addRows, removeRows } = useGridData<StockTick>(
+    generateInitialData(10),
+    {
+      getRowId: (row) => row.id,
+      debounceMs: 50,
+    },
+  );
 
   useEffect(() => {
     setMounted(true);
+    const unsubscribe = dataSource.subscribe(() => {
+      setRowCount(dataSource.getTotalRowCount());
+    });
     return () => {
+      unsubscribe();
       if (streamingRef.current) {
         clearInterval(streamingRef.current);
       }
     };
-  }, []);
+  }, [dataSource]);
 
   const handleAddRow = useCallback(() => {
-    dataSource.addRows([generateTick()]);
-  }, [dataSource]);
+    addRows([generateTick()]);
+  }, [addRows]);
 
   const handleAddBatch = useCallback(() => {
     const batch = Array.from({ length: batchSize }, () => generateTick());
-    dataSource.addRows(batch);
-  }, [dataSource, batchSize]);
+    addRows(batch);
+  }, [addRows, batchSize]);
 
   const handleRemoveFirst = useCallback(async () => {
     await dataSource.flushTransactions();
     const count = dataSource.getTotalRowCount();
     if (count > 0) {
       const firstId = 1;
-      dataSource.removeRows([firstId]);
+      removeRows([firstId]);
     }
-  }, [dataSource]);
+  }, [dataSource, removeRows]);
 
   const handleClearAll = useCallback(async () => {
     await dataSource.flushTransactions();
     const count = dataSource.getTotalRowCount();
     const ids = Array.from({ length: count }, (_, i) => i + 1);
-    dataSource.removeRows(ids);
-  }, [dataSource]);
+    removeRows(ids);
+  }, [dataSource, removeRows]);
 
   const toggleStreaming = useCallback(() => {
     if (isStreaming) {
@@ -157,11 +155,11 @@ export function LiveDataDemo() {
       setIsStreaming(false);
     } else {
       streamingRef.current = setInterval(() => {
-        dataSource.addRows([generateTick()]);
+        addRows([generateTick()]);
       }, streamInterval);
       setIsStreaming(true);
     }
-  }, [isStreaming, streamInterval, dataSource]);
+  }, [isStreaming, streamInterval, addRows]);
 
   if (!mounted) {
     return (

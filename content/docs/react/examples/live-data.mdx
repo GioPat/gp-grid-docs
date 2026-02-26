@@ -5,7 +5,7 @@ description: Real-time data mutations with streaming updates
 
 # Live Data
 
-This example demonstrates real-time data mutations using `createMutableClientDataSource`, showcasing the transaction system's ability to handle high-frequency updates efficiently.
+This example demonstrates real-time data mutations using the `useGridData` hook, showcasing the transaction system's ability to handle high-frequency updates efficiently.
 
 ## Interactive Demo
 
@@ -20,16 +20,16 @@ The demo simulates a live stock ticker that:
 - Streams new data at configurable intervals
 - Supports batch insertions
 - Handles row removal operations
-- Tracks row count in real-time via transaction callbacks
+- Tracks row count in real-time via data source subscriptions
 - Uses a custom cell renderer to colorize positive/negative changes
 
 ## Full Example
 
 ```tsx
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   Grid,
-  createMutableClientDataSource,
+  useGridData,
   type ColumnDefinition,
 } from "@gp-grid/react";
 
@@ -91,30 +91,33 @@ export function LiveDataDemo() {
   const [batchSize, setBatchSize] = useState(10);
   const streamingRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Create mutable data source with transaction tracking
-  const dataSource = useMemo(() => {
-    return createMutableClientDataSource<StockTick>(
-      generateInitialData(10),
-      {
-        getRowId: (row) => row.id,
-        debounceMs: 50,
-        onTransactionProcessed: (result) => {
-          setRowCount((prev) => prev + result.added - result.removed);
-        },
-      }
-    );
-  }, []);
+  // Create mutable data source via useGridData hook
+  const { dataSource, addRows, removeRows } = useGridData<StockTick>(
+    generateInitialData(10),
+    {
+      getRowId: (row) => row.id,
+      debounceMs: 50,
+    },
+  );
+
+  // Subscribe to data changes to track row count
+  useEffect(() => {
+    const unsubscribe = dataSource.subscribe(() => {
+      setRowCount(dataSource.getTotalRowCount());
+    });
+    return () => unsubscribe();
+  }, [dataSource]);
 
   // Add a single row
   const handleAddRow = useCallback(() => {
-    dataSource.addRows([generateTick()]);
-  }, [dataSource]);
+    addRows([generateTick()]);
+  }, [addRows]);
 
   // Add multiple rows at once
   const handleAddBatch = useCallback(() => {
     const batch = Array.from({ length: batchSize }, () => generateTick());
-    dataSource.addRows(batch);
-  }, [dataSource, batchSize]);
+    addRows(batch);
+  }, [addRows, batchSize]);
 
   // Remove the first row
   const handleRemoveFirst = useCallback(async () => {
@@ -122,17 +125,17 @@ export function LiveDataDemo() {
     const count = dataSource.getTotalRowCount();
     if (count > 0) {
       const firstId = 1;
-      dataSource.removeRows([firstId]);
+      removeRows([firstId]);
     }
-  }, [dataSource]);
+  }, [dataSource, removeRows]);
 
   // Clear all rows
   const handleClearAll = useCallback(async () => {
     await dataSource.flushTransactions();
     const count = dataSource.getTotalRowCount();
     const ids = Array.from({ length: count }, (_, i) => i + 1);
-    dataSource.removeRows(ids);
-  }, [dataSource]);
+    removeRows(ids);
+  }, [dataSource, removeRows]);
 
   // Toggle streaming mode
   const toggleStreaming = useCallback(() => {
@@ -144,11 +147,11 @@ export function LiveDataDemo() {
       setIsStreaming(false);
     } else {
       streamingRef.current = setInterval(() => {
-        dataSource.addRows([generateTick()]);
+        addRows([generateTick()]);
       }, streamInterval);
       setIsStreaming(true);
     }
-  }, [isStreaming, streamInterval, dataSource]);
+  }, [isStreaming, streamInterval, addRows]);
 
   return (
     <div>
@@ -229,21 +232,24 @@ const columns: ColumnDefinition[] = [
 />
 ```
 
-### Transaction Callbacks
+### Subscribing to Data Changes
 
-The `onTransactionProcessed` callback fires after each batch of operations is processed:
+Use `dataSource.subscribe` to react to data mutations (adds, removes, updates):
 
 ```tsx
-const dataSource = createMutableClientDataSource(data, {
+const { dataSource } = useGridData(data, {
   getRowId: (row) => row.id,
   debounceMs: 50,
-  onTransactionProcessed: (result) => {
-    // result.added - number of rows added
-    // result.removed - number of rows removed
-    // result.updated - number of rows updated
-    updateRowCount(result);
-  },
 });
+
+useEffect(() => {
+  const unsubscribe = dataSource.subscribe(() => {
+    // Fires after each batch of operations is processed
+    const totalRows = dataSource.getTotalRowCount();
+    setRowCount(totalRows);
+  });
+  return () => unsubscribe();
+}, [dataSource]);
 ```
 
 ### Debouncing for Performance
@@ -263,8 +269,10 @@ dataSource.addRows([tick3]);
 For continuous data streams, use `setInterval` with `addRows`:
 
 ```tsx
+const { addRows } = useGridData(data, { getRowId: (row) => row.id });
+
 const intervalId = setInterval(() => {
-  dataSource.addRows([generateNewData()]);
+  addRows([generateNewData()]);
 }, 100); // Add new row every 100ms
 
 // Cleanup
@@ -276,13 +284,17 @@ clearInterval(intervalId);
 Before operations that depend on current state, flush pending transactions:
 
 ```tsx
+const { dataSource, removeRows } = useGridData(data, {
+  getRowId: (row) => row.id,
+});
+
 async function removeAllRows() {
   // Ensure all pending adds are processed first
   await dataSource.flushTransactions();
 
   const count = dataSource.getTotalRowCount();
   const ids = getAllRowIds();
-  dataSource.removeRows(ids);
+  removeRows(ids);
 }
 ```
 
@@ -292,7 +304,7 @@ async function removeAllRows() {
 
 2. **Use batch operations** - `addRows([row1, row2, row3])` is more efficient than three separate `addRows` calls.
 
-3. **Leverage transaction callbacks** - Update derived state in `onTransactionProcessed` rather than polling.
+3. **Leverage subscriptions** - Update derived state in `dataSource.subscribe` rather than polling.
 
 4. **Clean up intervals** - Always clear streaming intervals when components unmount:
 
