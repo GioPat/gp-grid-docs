@@ -2,6 +2,11 @@
 @import "fumadocs-ui/css/purple.css";
 @import "fumadocs-ui/css/preset.css";
 
+/* Raise TOC popover bar above grid content */
+[data-toc-popover] {
+  z-index: 20;
+}
+
 /* Code block tab buttons */
 [role="tablist"] button {
   cursor: pointer;
